@@ -71,20 +71,41 @@
             {{-- Sidebar --}}
             <div class="lg:col-span-1">
                 <div class="bg-white p-6 rounded-lg shadow-lg sticky top-24">
-                    <div class="text-3xl font-bold text-primary mb-6">
+                    <div class="text-3xl font-bold text-primary mb-2">
                         {{ number_format($property->price, 0, ',', ' ') }} FCFA
                     </div>
+                    @if($property->rental_frequency)
+                        <p class="text-gray-600 mb-6">{{ __('messages.properties.per_' . $property->rental_frequency) }}</p>
+                    @else
+                        <p class="text-gray-600 mb-6">{{ __('messages.properties.per_month') }}</p>
+                    @endif
+
+                    @if($property->availability_status == 'available')
+                        @auth
+                            @if(auth()->user()->isClient() || auth()->user()->isAdmin())
+                                <a href="{{ route('booking.create', $property->id) }}" 
+                                   class="block w-full bg-gradient-to-r from-primary to-accent text-white text-center py-3 rounded-lg hover:shadow-xl transition-all hover:scale-105 font-semibold mb-3">
+                                    {{ __('messages.properties.book_now') }}
+                                </a>
+                            @endif
+                        @else
+                            <button onclick="Livewire.dispatch('openLoginModal')" 
+                                    class="block w-full bg-gradient-to-r from-primary to-accent text-white text-center py-3 rounded-lg hover:shadow-xl transition-all hover:scale-105 font-semibold mb-3">
+                                {{ __('messages.booking.login_to_book') }}
+                            </button>
+                        @endauth
+                    @endif
 
                     <a href="/contact?property={{ $property->id }}" 
-                       class="block w-full bg-primary text-white text-center py-3 rounded-lg hover:bg-primary-600 transition-colors mb-4">
+                       class="block w-full bg-white border-2 border-primary text-primary text-center py-3 rounded-lg hover:bg-primary hover:text-white transition-colors mb-4">
                         {{ __('messages.properties.contact') }}
                     </a>
 
                     <div class="border-t pt-4">
                         <h4 class="font-semibold mb-2">{{ __('messages.properties.status_label') }}</h4>
                         <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold 
-                                     {{ $property->status == 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                            {{ __('messages.properties.status.' . $property->status) }}
+                                     {{ $property->availability_status == 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            {{ __('messages.properties.status.' . $property->availability_status) }}
                         </span>
                     </div>
 
@@ -94,6 +115,31 @@
                             <p class="text-gray-600">{{ $property->address }}</p>
                         </div>
                     @endif
+
+                    {{-- Rental Details --}}
+                    <div class="border-t pt-4 mt-4">
+                        <h4 class="font-semibold mb-3">{{ __('messages.booking.rental_details') }}</h4>
+                        <div class="space-y-2 text-sm">
+                            @if($property->monthly_rent)
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">{{ __('messages.booking.monthly_rent') }}:</span>
+                                    <span class="font-semibold">{{ number_format($property->monthly_rent, 0, ',', ' ') }} FCFA</span>
+                                </div>
+                            @endif
+                            @if($property->deposit_amount)
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">{{ __('messages.booking.deposit') }}:</span>
+                                    <span class="font-semibold">{{ number_format($property->deposit_amount, 0, ',', ' ') }} FCFA</span>
+                                </div>
+                            @endif
+                            @if($property->advance_payment)
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">{{ __('messages.booking.advance') }}:</span>
+                                    <span class="font-semibold">{{ number_format($property->advance_payment, 0, ',', ' ') }} FCFA</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

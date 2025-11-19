@@ -15,9 +15,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-background text-foreground">
+<body class="font-sans antialiased bg-white text-gray-900">
     <div class="min-h-screen">
-        @yield('content')
+        {{ $slot }}
     </div>
 
     @livewireScripts

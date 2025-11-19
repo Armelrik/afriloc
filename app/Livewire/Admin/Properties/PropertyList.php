@@ -19,7 +19,7 @@ class PropertyList extends Component
     public function render()
     {
         $properties = Property::latest()->paginate(10);
-        return view('livewire.admin.properties.property-list', compact('properties'))->layout('layouts.app');
+        return view('livewire.admin.properties.property-list', compact('properties'))->layout('layouts.admin');
     }
 }
 

@@ -17,11 +17,16 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, string $role): Response
     {
         if (!auth()->check()) {
+            // Rediriger vers la page de connexion appropriée selon le rôle requis
+            if ($role === 'admin') {
+                return redirect()->route('admin.login');
+            }
             return redirect('/login');
         }
 
         if (!auth()->user()->hasRole($role)) {
-            abort(403, 'Unauthorized action.');
+            // Si l'utilisateur est connecté mais n'a pas le bon rôle
+            abort(403, 'Accès non autorisé. Vous n\'avez pas les permissions nécessaires.');
         }
 
         return $next($request);

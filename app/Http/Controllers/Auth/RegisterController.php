@@ -35,8 +35,8 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Assign default role
-        $user->assignRole('tenant');
+        // Assign default role (client)
+        $user->assignRole('client');
 
         Auth::login($user);
 

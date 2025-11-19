@@ -3,14 +3,24 @@
 namespace App\Livewire\Components;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\Session;
 
 class Header extends Component
 {
-    public function switchLanguage($locale)
+    public $mobileMenuOpen = false;
+
+    public function switchLanguage($lang)
     {
-        Session::put('locale', $locale);
-        $this->redirect(request()->header('Referer'), navigate: true);
+        session(['locale' => $lang]);
+        app()->setLocale($lang);
+        
+        $this->dispatch('languageChanged');
+        
+        return redirect(request()->header('Referer'));
+    }
+
+    public function toggleMobileMenu()
+    {
+        $this->mobileMenuOpen = !$this->mobileMenuOpen;
     }
 
     public function render()

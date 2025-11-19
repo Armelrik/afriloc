@@ -18,7 +18,9 @@ class AdminSeeder extends Seeder
             ]
         );
 
-        $admin->assignRole('admin');
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
 
         $this->command->info('Admin user created: admin@afriloc.com / password123');
     }

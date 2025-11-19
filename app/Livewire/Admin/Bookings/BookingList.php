@@ -20,7 +20,7 @@ class BookingList extends Component
     public function render()
     {
         $bookings = Booking::with('property')->latest()->paginate(10);
-        return view('livewire.admin.bookings.booking-list', compact('bookings'))->layout('layouts.app');
+        return view('livewire.admin.bookings.booking-list', compact('bookings'))->layout('layouts.admin');
     }
 }
 

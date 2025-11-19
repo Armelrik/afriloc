@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\JwtMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\VerifiedPromoterMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'jwt.verify' => JwtMiddleware::class,
             'role' => RoleMiddleware::class,
+            'verified.promoter' => VerifiedPromoterMiddleware::class,
         ]);
         
         $middleware->web(append: [

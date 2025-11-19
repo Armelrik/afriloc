@@ -19,7 +19,7 @@ class ContactList extends Component
     public function render()
     {
         $contacts = Contact::latest()->paginate(10);
-        return view('livewire.admin.contacts.contact-list', compact('contacts'))->layout('layouts.app');
+        return view('livewire.admin.contacts.contact-list', compact('contacts'))->layout('layouts.admin');
     }
 }
 

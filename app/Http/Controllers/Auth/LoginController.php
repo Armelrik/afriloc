@@ -29,7 +29,24 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
+            $user = Auth::user();
+            
+            // Role-based redirection
+            if ($user->isAdmin()) {
             return redirect()->intended('/admin');
+            } elseif ($user->isPromoter()) {
+                // Check if promoter is approved
+                if ($user->promoter && $user->promoter->status === 'approved') {
+                    return redirect()->intended('/promoter/dashboard');
+                } else {
+                    return redirect()->route('promoter.pending');
+                }
+            } elseif ($user->isClient()) {
+                return redirect()->intended('/my/dashboard');
+            }
+            
+            // Default fallback
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([

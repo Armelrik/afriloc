@@ -1,0 +1,88 @@
+MELTECH S.A.R.L
+------------------------------------------------------------------ 1
+Site web Locafri.com
+Cahier de charges LocAfri
+Objet : Site web professionnel pour gestion d’activité de location, initialement destiné au
+Burkina Faso et à l’Afrique, avec la vision de s’étendre à l’international et à la diaspora.
+Le site LocAfri.com servira de plateforme pour présenter les biens/services à louer, gérer les
+réservations et intégrer les paiements Mobile Money et cartes bancaires.
+1. Objectif de l’application
+• Offrir une vitrine digitale moderne pour l’activité de location.
+• Permettre aux clients de réserver facilement en ligne et de faire le paiement.
+• Créer un compte de promoteur (propriétaires, démarcheurs) pour l’ajout de bien à la
+plateforme.
+• Simplifier la gestion des réservations via un back-office intuitif.
+• Préparer le site pour une extension internationale et l’ajout futur de modules et d’une
+application mobile.
+2. Versions et fonctionnalités
+Version 1 – Listage et réservation client uniquement
+• Page d’accueil : présentation, biens mis en avant, bouton “Louez maintenant”.
+• Catalogue / Listage : recherche, filtres (type, prix, disponibilité).
+• Fiches détaillées : description complète, photos, vidéos, tarifs, bouton de réservation
+ou location ou achat.
+• Formulaire de réservation : nom, téléphone, email, dates, nombre de personnes,
+commentaires.
+• Back-office : gestion du listage et des réservations.
+• Contact : formulaire, coordonnées, carte de localisation.
+• Responsive design : adapté mobile, tablette et desktop.
+• Contenu visuel : photos illustrant les maisons de Ouaga.
+Version 2 – Back-office de gestion complète avec inclusion des paiements Mobile Money et
+Visa pour permettre aux clients de payer directement en ligne.
+• Module de Paiement Mobile Money (Mobicash, Sank Money, Orange Money).
+MELTECH S.A.R.L
+------------------------------------------------------------------ 2
+Site web Locafri.com
+• Paiement par carte bancaire (Visa / Mastercard).
+• Génération automatique de reçus électroniques.
+• Tableau de bord avancé pour suivre réservations et paiements.
+• Notifications SMS/email pour confirmations de paiement.
+• Multidevise et préparation pour l’international.
+3. Fonctionnalités
+Les fonctionnalités attendues de la plateforme :
+• Permettre aux promoteurs de biens de créer un compte et d’ajouter leur bien avec les
+détails : prix, fréquence de location, mensualités, dépôt de garantie, avance, lieu de
+la résidence, surface du bien, etc.
+• Permettre aux clients de créer un compte, de voir la liste des biens, de les filtrer en
+fonction de la localisation, du prix/mensualité, de la surface du bien, pièces,
+disponibilité, etc. De réserver ou de louer un bien en remplissant un formulaire qui
+est transmis au compte du promoteur après que les pourcentages de la plateforme
+ont été prélevés.
+• Permettre à la plateforme de gérer les demandes de réservations/paiements et
+d’envoyer les détails au promoteur du bien après voir prélevé les commissions.
+4. Identité numérique
+• Nom Site web: www.locafri.com où www.afriloc.bf
+• Slogan : Un click, un logement!
+5. Design et ergonomie
+• Charte graphique : sobre, vivante, couleurs chaudes, orange ou gris.
+• Navigation intuitive et agréable.
+6. Technologies Proposées
+• Frontend: Next.js / React + Tailwind CSS (responsive web et mobile).
+• Backend : Laravel (préparation pour intégration Mobile Money et Visa)
+• Base de données : MySQL / PostgreSQL
+• Hébergement : serveur cloud ou local adapté au trafic
+MELTECH S.A.R.L
+------------------------------------------------------------------ 3
+Site web Locafri.com
+7. Planning Prévisionnel v1 et 2
+• Validation Cahier des Charges : 1-2 semaines.
+• Design UI/UX : 1–2 semaines.
+• Développement modules principaux : 1–2 semaines.
+• Développement back-office : 1-2 semaines.
+• Intégration, tests & mise en production v1: 1-2 semaines.
+• Développement version 2 et integration module paiement : 4-6 semaines
+Durée totale estimée : 6 à 8 semaines v1 + 4 à 6 semaines v2
+8. Livrables
+• UI/UX (web et mobile) de la plateforme web complète hébergée.
+• Documentation technique et guide utilisateur.
+• Base de données centralisée configurée.
+• Accès back-office avec gestion des utilisateurs.
+9. Engagement & Suivi
+• Approche collaborative avec réunions hebdomadaires.
+• Méthodologie agile (livraison par itérations).
+• Tests utilisateurs avant mise en ligne.
+10. Avantages
+• Solution professionnelle, attractive et adaptée au marché local.
+• Base solide pour évolutions futures (app mobile, extension internationale).
+• Réduction de la charge administrative grâce au back-office et notifications
+automatisées.
+• Potentiel pour créer un service intégré pour toute l’Afrique et la diaspora.
