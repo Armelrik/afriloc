@@ -158,6 +158,8 @@
     "messages.admin.email": "Email",
     "messages.admin.subject": "Subject",
     "messages.admin.date": "Date",
+    "messages.booking.status.active": "Active",
+    "messages.booking.status.completed": "Completed",
     
     "messages.search.location": "Location",
     "messages.search.location_placeholder": "Enter a location...",
@@ -221,9 +223,6 @@
     "messages.booking.status.cancelled": "Cancelled",
     
     "messages.renewal.expires": "Expires",
-    "messages.renewal.status.pending": "Pending",
-    "messages.renewal.status.approved": "Approved",
-    "messages.renewal.status.rejected": "Rejected",
     
     "messages.maintenance.status.pending": "Pending",
     "messages.maintenance.status.in_progress": "In Progress",
@@ -314,10 +313,8 @@
     "messages.booking.confirm_cancel": "Are you sure you want to cancel this booking?",
     "messages.booking.cancelled_success": "Booking cancelled successfully",
     "messages.booking.booking_info": "Booking information",
-    "messages.booking.rental_duration": "Rental duration",
     "messages.booking.status_label": "Status",
     "messages.booking.total_rent": "Total rent",
-    "messages.booking.deposit": "Deposit",
     "messages.booking.num_people": "Number of people",
     "messages.booking.details": "Booking details",
     "messages.booking.frequency.daily": "day(s)",

@@ -45,7 +45,7 @@ Route::middleware(['auth', 'role:promoter', 'verified.promoter'])->prefix('promo
 });
 
 // Client routes (authenticated)
-Route::middleware(['auth', 'role:client,admin'])->prefix('my')->group(function () {
+Route::middleware(['auth', 'role:client'])->prefix('my')->group(function () {
     Route::get('/dashboard', \App\Livewire\Client\Dashboard::class)->name('client.dashboard');
     Route::get('/bookings', \App\Livewire\Client\Bookings\BookingList::class)->name('client.bookings');
     Route::get('/maintenance', \App\Livewire\Client\Maintenance\MaintenanceRequests::class)->name('client.maintenance.index');
