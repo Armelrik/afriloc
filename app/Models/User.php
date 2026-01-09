@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -14,7 +14,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,8 +23,14 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
+        'nom',
+        'prenom',
         'email',
+        'telephone',
         'password',
+        'type_utilisateur',
+        'date_inscription',
+        'est_actif',
     ];
 
     /**
@@ -47,6 +53,8 @@ class User extends Authenticatable implements JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_inscription' => 'date',
+            'est_actif' => 'boolean',
         ];
     }
 
@@ -67,38 +75,82 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Get all bookings for this user
+     * Get the client profile for this user
      */
-    public function bookings(): HasMany
+    public function client(): HasOne
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasOne(Client::class);
+    }
+
+    /**
+     * Get the promoter profile for this user
+     */
+    public function promoteur(): HasOne
+    {
+        return $this->hasOne(Promoteur::class);
+    }
+
+    /**
+     * Get all reservations for this user (as client)
+     */
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'client_id');
     }
 
     /**
      * Get all payments for this user
      */
-    public function payments(): HasMany
+    public function paiements(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Paiement::class);
     }
 
-    public function promoter(): HasOne
+    /**
+     * Get all notifications for this user
+     */
+    public function notifications(): HasMany
     {
-        return $this->hasOne(Promoter::class);
+        return $this->hasMany(Notification::class, 'utilisateur_id');
     }
 
+    /**
+     * Get unread notifications for this user
+     */
+    public function notificationsNonLues(): HasMany
+    {
+        return $this->notifications()->where('est_lue', false);
+    }
+
+    /**
+     * Check if user is admin
+     */
     public function isAdmin(): bool
     {
-        return $this->hasRole('admin');
+        return $this->type_utilisateur === 'administrateur' || $this->hasRole('admin');
     }
 
+    /**
+     * Check if user is promoter
+     */
     public function isPromoter(): bool
     {
-        return $this->hasRole('promoter');
+        return $this->type_utilisateur === 'promoteur' || $this->hasRole('promoter');
     }
 
+    /**
+     * Check if user is client
+     */
     public function isClient(): bool
     {
-        return $this->hasRole('client');
+        return $this->type_utilisateur === 'client' || $this->hasRole('client');
+    }
+
+    /**
+     * Get full name attribute
+     */
+    public function getNomCompletAttribute(): string
+    {
+        return trim(($this->prenom ?? '') . ' ' . ($this->nom ?? '')) ?: $this->name;
     }
 }

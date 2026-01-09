@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Components;
 
-use App\Models\Property;
+use App\Models\Bien;
 use Livewire\Component;
 
 class PropertyCard extends Component
 {
-    public Property $property;
+    public Bien $property;
 
-    public function mount(Property $property)
+    public function mount(Bien $property)
     {
         $this->property = $property;
     }

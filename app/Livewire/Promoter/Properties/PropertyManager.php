@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Promoter\Properties;
 
-use App\Models\Property;
+use App\Models\Bien;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,23 +16,23 @@ class PropertyManager extends Component
 
     public function deleteProperty($id)
     {
-        $property = Property::where('promoter_id', Auth::user()->promoter->id)->findOrFail($id);
+        $property = Bien::where('promoteur_id', Auth::user()->promoteur->id)->findOrFail($id);
         $property->delete();
         
-        session()->flash('success', __('Property deleted successfully'));
+        session()->flash('success', __('messages.properties.deleted'));
     }
 
     public function render()
     {
-        $properties = Property::byPromoter(Auth::user()->promoter->id)
+        $properties = Bien::where('promoteur_id', Auth::user()->promoteur->id)
             ->when($this->search, function ($query) {
-                $query->where('title_fr', 'like', '%' . $this->search . '%')
-                      ->orWhere('title_en', 'like', '%' . $this->search . '%');
+                $query->where('titre', 'like', '%' . $this->search . '%')
+                      ->orWhere('ville', 'like', '%' . $this->search . '%');
             })
             ->when($this->filterStatus, function ($query) {
-                $query->where('availability_status', $this->filterStatus);
+                $query->where('disponibilite', $this->filterStatus);
             })
-            ->latest()
+            ->latest('date_ajout')
             ->paginate(10);
 
         return view('livewire.promoter.properties.property-manager', [

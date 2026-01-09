@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 <div>
     @livewire('components.header')
 
@@ -48,9 +49,12 @@
                         <div class="p-6">
                             <div class="flex flex-col md:flex-row gap-4">
                                 {{-- Property Image --}}
-                                @if($booking->property->images && count($booking->property->images) > 0)
-                                    <img src="{{ asset('images/' . basename($booking->property->images[0])) }}" 
-                                         alt="{{ $booking->property->title_en }}" 
+                                @if($booking->bien->medias && $booking->bien->medias->where('type_media', 'IMAGE')->count() > 0)
+                                    @php
+                                        $image = $booking->bien->medias->where('type_media', 'IMAGE')->first();
+                                    @endphp
+                                    <img src="{{ Storage::url($image->url_media) }}" 
+                                         alt="{{ $booking->bien->titre }}" 
                                          class="w-full md:w-48 h-48 object-cover rounded-lg">
                                 @endif
 
@@ -59,70 +63,87 @@
                                     <div class="flex justify-between items-start mb-4">
                                         <div>
                                             <h3 class="text-xl font-bold mb-1">
-                                                {{ app()->getLocale() == 'fr' ? $booking->property->title_fr : $booking->property->title_en }}
+                                                {{ $booking->bien->titre }}
                                             </h3>
                                             <p class="text-gray-600 flex items-center gap-1">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 </svg>
-                                                {{ $booking->property->location }}
+                                                {{ $booking->bien->ville }}@if($booking->bien->quartier), {{ $booking->bien->quartier }}@endif
                                             </p>
                                         </div>
                                         <span class="px-3 py-1 rounded-full text-sm font-semibold
-                                            {{ $booking->status == 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
-                                            {{ $booking->status == 'pending' ? 'bg-orange-100 text-orange-800' : '' }}
-                                            {{ $booking->status == 'active' ? 'bg-blue-100 text-blue-800' : '' }}
-                                            {{ $booking->status == 'completed' ? 'bg-gray-100 text-gray-800' : '' }}
-                                            {{ $booking->status == 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
-                                            {{ __('messages.booking.status.' . $booking->status) }}
+                                            {{ $booking->statut == 'CONFIRME' ? 'bg-green-100 text-green-800' : '' }}
+                                            {{ $booking->statut == 'EN_ATTENTE' ? 'bg-orange-100 text-orange-800' : '' }}
+                                            {{ $booking->statut == 'TERMINE' ? 'bg-gray-100 text-gray-800' : '' }}
+                                            {{ $booking->statut == 'ANNULE' ? 'bg-red-100 text-red-800' : '' }}">
+                                            @switch($booking->statut)
+                                                @case('EN_ATTENTE')
+                                                    En attente
+                                                    @break
+                                                @case('CONFIRME')
+                                                    Confirmée
+                                                    @break
+                                                @case('TERMINE')
+                                                    Terminée
+                                                    @break
+                                                @case('ANNULE')
+                                                    Annulée
+                                                    @break
+                                            @endswitch
                                         </span>
                                     </div>
 
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                                         <div>
-                                            <p class="text-sm text-gray-500">{{ __('messages.booking.start_date') }}</p>
-                                            <p class="font-semibold">{{ $booking->start_date->format('d/m/Y') }}</p>
+                                            <p class="text-sm text-gray-500">Date de début</p>
+                                            <p class="font-semibold">{{ $booking->date_debut->format('d/m/Y') }}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500">{{ __('messages.booking.end_date') }}</p>
-                                            <p class="font-semibold">{{ $booking->end_date->format('d/m/Y') }}</p>
+                                            <p class="text-sm text-gray-500">Date de fin</p>
+                                            <p class="font-semibold">{{ $booking->date_fin->format('d/m/Y') }}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500">{{ __('messages.booking.duration') }}</p>
-                                            <p class="font-semibold">{{ $booking->start_date->diffInDays($booking->end_date) }} {{ __('messages.common.days') }}</p>
+                                            <p class="text-sm text-gray-500">Durée</p>
+                                            <p class="font-semibold">{{ $booking->date_debut->diffInDays($booking->date_fin) }} jours</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500">{{ __('messages.booking.total_amount') }}</p>
-                                            <p class="font-bold text-primary">{{ number_format($booking->total_amount, 0, ',', ' ') }} FCFA</p>
+                                            <p class="text-sm text-gray-500">Montant total</p>
+                                            <p class="font-bold text-primary">{{ number_format($booking->montant_total, 0, ',', ' ') }} FCFA</p>
                                         </div>
                                     </div>
 
                                     {{-- Payment Status --}}
                                     <div class="mb-4">
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                            {{ $booking->payment_status == 'completed' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
-                                            {{ __('messages.payment.status.' . $booking->payment_status) }}
-                                        </span>
+                                        @if($booking->paiement)
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                                                Payée
+                                            </span>
+                                        @else
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800">
+                                                En attente de paiement
+                                            </span>
+                                        @endif
                                     </div>
 
                                     {{-- Actions --}}
                                     <div class="flex gap-2">
-                                        <a href="{{ route('properties.show', $booking->property_id) }}" 
+                                        <a href="{{ route('properties.show', $booking->bien_id) }}" 
                                            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                                            {{ __('messages.common.view_property') }}
+                                            Voir la propriété
                                         </a>
-                                        @if($booking->payment_status !== 'completed')
+                                        @if(!$booking->paiement)
                                             <a href="{{ route('payment.show', $booking->id) }}" 
                                                class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors">
-                                                {{ __('messages.payment.pay_now') }}
+                                                Payer maintenant
                                             </a>
                                         @endif
-                                        @if($booking->status === 'pending')
+                                        @if($booking->statut === 'EN_ATTENTE')
                                             <button wire:click="cancelBooking({{ $booking->id }})" 
-                                                    wire:confirm="{{ __('messages.booking.confirm_cancel') }}"
+                                                    wire:confirm="Êtes-vous sûr de vouloir annuler cette réservation ?"
                                                     class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors">
-                                                {{ __('messages.common.cancel') }}
+                                                Annuler
                                             </button>
                                         @endif
                                     </div>
@@ -142,11 +163,11 @@
                 <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ __('messages.client.no_bookings') }}</h3>
-                <p class="text-gray-500 mb-6">{{ __('messages.client.no_bookings_description') }}</p>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Aucune réservation</h3>
+                <p class="text-gray-500 mb-6">Vous n'avez pas encore fait de réservation.</p>
                 <a href="{{ route('properties.index') }}" 
                    class="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors">
-                    {{ __('messages.client.browse_properties') }}
+                    Parcourir les propriétés
                 </a>
             </div>
         @endif

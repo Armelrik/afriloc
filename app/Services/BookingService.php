@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Booking;
-use App\Models\Property;
-use App\Models\User;
+use App\Models\Bien;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BookingService
@@ -16,21 +16,15 @@ class BookingService
         $this->commissionService = $commissionService;
     }
 
-    public function calculateTotalCost(Property $property, int $duration, string $frequency): array
+    public function calculateTotalCost(Bien $bien, int $duration, string $frequency): array
     {
-        $basePrice = match($frequency) {
-            'daily' => $property->price,
-            'weekly' => $property->price * 7,
-            'monthly' => $property->monthly_rent ?? $property->price * 30,
-            'yearly' => ($property->monthly_rent ?? $property->price * 30) * 12,
-            default => $property->price,
-        };
+        $basePrice = $bien->prix_location ?? 0;
 
         $totalRent = $basePrice * $duration;
-        $deposit = $property->deposit_amount ?? 0;
-        $advance = $property->advance_payment ?? 0;
+        $deposit = $bien->depot_garantie ?? 0;
+        $advance = $bien->avance ?? 0;
         
-        $commissionRate = $property->commission_rate ?? $this->commissionService->getDefaultRate();
+        $commissionRate = $this->commissionService->getDefaultRate();
         $commission = $this->commissionService->calculateCommission($totalRent, $commissionRate);
         
         return [
@@ -43,62 +37,30 @@ class BookingService
         ];
     }
 
-    public function processBooking(array $bookingData): Booking
+    public function processBooking(array $bookingData): Reservation
     {
         return DB::transaction(function () use ($bookingData) {
-            $property = Property::findOrFail($bookingData['property_id']);
+            $bien = Bien::publie()->findOrFail($bookingData['bien_id']);
             
             $costs = $this->calculateTotalCost(
-                $property,
+                $bien,
                 $bookingData['rental_duration'],
                 $bookingData['rental_frequency']
             );
 
-            $booking = Booking::create([
-                'property_id' => $property->id,
-                'user_id' => $bookingData['user_id'] ?? null,
-                'customer_name' => $bookingData['customer_name'],
-                'customer_email' => $bookingData['customer_email'],
-                'customer_phone' => $bookingData['customer_phone'],
-                'start_date' => $bookingData['start_date'],
-                'end_date' => $bookingData['end_date'],
-                'num_people' => $bookingData['num_people'] ?? 1,
-                'rental_duration' => $bookingData['rental_duration'],
-                'rental_frequency' => $bookingData['rental_frequency'],
-                'total_rent' => $costs['total_rent'],
-                'deposit_paid' => $costs['deposit'],
-                'advance_paid' => $costs['advance'],
-                'platform_commission' => $costs['commission'],
-                'promoter_amount' => $costs['promoter_amount'],
-                'total_amount' => $costs['total_due'],
-                'comments' => $bookingData['comments'] ?? null,
-                'status' => 'pending',
-                'payment_status' => 'pending',
+            $reservation = Reservation::create([
+                'bien_id' => $bien->id,
+                'client_id' => optional(Auth::user())->client->id ?? null,
+                'date_debut' => $bookingData['start_date'],
+                'date_fin' => $bookingData['end_date'],
+                'statut' => 'EN_ATTENTE',
+                'montant_total' => $costs['total_due'],
+                'note' => $bookingData['comments'] ?? null,
+                'conditions_specifiques' => null,
             ]);
 
-            return $booking;
+            return $reservation;
         });
     }
-
-    public function notifyPromoter(Booking $booking): void
-    {
-        // Will implement with notifications
-        // $booking->property->promoter->user->notify(new NewBookingReceived($booking));
-    }
-
-    public function processPayment(Booking $booking, array $paymentData): bool
-    {
-        // Placeholder for V2 payment integration
-        $booking->update([
-            'payment_status' => 'completed',
-            'payment_method' => $paymentData['method'] ?? 'cash',
-            'payment_provider' => $paymentData['provider'] ?? null,
-            'payment_reference' => $paymentData['reference'] ?? null,
-            'payment_completed_at' => now(),
-        ]);
-
-        return true;
-    }
 }
-
 

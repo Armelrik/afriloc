@@ -25,9 +25,11 @@
         <div class="col-md-3">
             <select wire:model.live="filterStatus" class="form-control">
                 <option value="">Tous les promoteurs</option>
-                <option value="pending">En attente d'approbation</option>
-                <option value="approved">Approuvés</option>
-                <option value="suspended">Suspendus</option>
+                <option value="EN_ATTENTE">En attente d'approbation</option>
+                <option value="VALIDE">Validés</option>
+                <option value="INCOMPLET">Incomplets</option>
+                <option value="REJETE">Rejetés</option>
+                <option value="SUSPENDU">Suspendus</option>
             </select>
         </div>
     </div>
@@ -63,63 +65,60 @@
                                         <strong>{{ $promoter->user->name }}</strong>
                                     </td>
                                     <td>{{ $promoter->user->email }}</td>
-                                    <td>{{ $promoter->phone ?? 'N/A' }}</td>
-                                    <td>{{ $promoter->company_name ?? 'N/A' }}</td>
+                                    <td>{{ $promoter->user->telephone ?? 'N/A' }}</td>
+                                    <td>{{ $promoter->raison_sociale ?? 'N/A' }}</td>
                                     <td>
-                                        @if ($promoter->status == 'approved')
+                                        @if ($promoter->statut == 'VALIDE')
                                             <span class="badge badge-success">
                                                 <i class="fas fa-check-circle mr-1"></i>
-                                                Approuvé
+                                                Validé
                                             </span>
-                                        @elseif ($promoter->status == 'pending')
+                                        @elseif ($promoter->statut == 'EN_ATTENTE')
                                             <span class="badge badge-warning">
                                                 <i class="fas fa-clock mr-1"></i>
                                                 En attente
                                             </span>
-                                        @else
+                                        @elseif ($promoter->statut == 'INCOMPLET')
+                                            <span class="badge badge-info">
+                                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                                Incomplet
+                                            </span>
+                                        @elseif ($promoter->statut == 'REJETE')
                                             <span class="badge badge-danger">
+                                                <i class="fas fa-times-circle mr-1"></i>
+                                                Rejeté
+                                            </span>
+                                        @else
+                                            <span class="badge badge-secondary">
                                                 <i class="fas fa-ban mr-1"></i>
                                                 Suspendu
                                             </span>
                                         @endif
                                     </td>
-                                    <td>{{ $promoter->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ $promoter->date_inscription ? $promoter->date_inscription->format('d/m/Y') : $promoter->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            @if ($promoter->status == 'pending')
-                                                <button wire:click="approve({{ $promoter->id }})" 
+                                            @if ($promoter->statut == 'EN_ATTENTE')
+                                                <button wire:click="approvePromoter({{ $promoter->id }})" 
                                                         class="btn btn-sm btn-success" 
                                                         data-toggle="tooltip" 
                                                         title="Approuver">
                                                     <i class="fas fa-check"></i>
                                                 </button>
-                                                <button wire:click="reject({{ $promoter->id }})" 
-                                                        class="btn btn-sm btn-danger" 
-                                                        data-toggle="tooltip" 
-                                                        title="Rejeter">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            @elseif ($promoter->status == 'approved')
-                                                <button wire:click="suspend({{ $promoter->id }})" 
+                                            @elseif ($promoter->statut == 'VALIDE')
+                                                <button wire:click="suspendPromoter({{ $promoter->id }})" 
                                                         class="btn btn-sm btn-warning" 
                                                         data-toggle="tooltip" 
                                                         title="Suspendre">
                                                     <i class="fas fa-ban"></i>
                                                 </button>
-                                            @else
-                                                <button wire:click="activate({{ $promoter->id }})" 
-                                                        class="btn btn-sm btn-success" 
-                                                        data-toggle="tooltip" 
-                                                        title="Activer">
-                                                    <i class="fas fa-check-circle"></i>
-                                                </button>
                                             @endif
-                                            <button wire:click="viewDetails({{ $promoter->id }})" 
-                                                    class="btn btn-sm btn-info" 
-                                                    data-toggle="tooltip" 
-                                                    title="Voir détails">
+                                            <a href="{{ route('admin.promoters.show', $promoter->id) }}" 
+                                               class="btn btn-sm btn-info" 
+                                               data-toggle="tooltip" 
+                                               title="Voir détails">
                                                 <i class="fas fa-eye"></i>
-                                            </button>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

@@ -1,0 +1,433 @@
+# Workflow de Validation des Promoteurs - LocAfri.com
+
+## 📋 Vue d'ensemble
+
+Le système de validation garantit que seuls les promoteurs vérifiés peuvent publier des biens sur la plateforme.
+
+## 🔄 Processus Complet de Validation
+
+### Phase 1️⃣ : Inscription du Promoteur
+
+**Étapes :**
+1. Le promoteur clique sur "Devenir promoteur"
+2. Remplit le formulaire d'inscription avec :
+   - Informations personnelles (nom, prénom, email, téléphone)
+   - Informations professionnelles :
+     - Raison sociale / Nom de l'entreprise
+     - Type de structure (Entreprise individuelle, SARL, SA, etc.)
+     - Numéro SIRET / IFU
+     - Adresse professionnelle
+     - Ville
+     - Description de l'activité
+
+### Phase 2️⃣ : Téléchargement des Documents
+
+**Documents obligatoires (attributs dans la classe Promoteur) :**
+- ✅ **cnibRecto** : CNIB/CNI recto (Photo de face)
+- ✅ **cnibVerso** : CNIB/CNI verso
+- ✅ **photoPromoteur** : Photo de profil du promoteur
+- ✅ **justificatifDomicile** : Justificatif de domicile (- 3 mois)
+- ✅ **registreCommerce** : Registre de commerce ou équivalent
+- ✅ **attestationFiscale** : Attestation fiscale (IFU)
+
+**Documents optionnels :**
+- **certificatPropriete** : Certificat de propriété des biens
+- **assuranceRC** : Assurance responsabilité civile
+
+**Chaque document a un attribut de vérification :**
+- cnibRectoVerifie (boolean)
+- cnibVersoVerifie (boolean)
+- photoVerifiee (boolean)
+- justificatifVerifie (boolean)
+- registreVerifie (boolean)
+- attestationVerifiee (boolean)
+
+**Contraintes techniques :**
+- Formats acceptés : PDF, JPG, PNG
+- Taille maximale : 5 MB par document
+- Résolution minimale pour photos : 300 DPI
+
+### Phase 3️⃣ : Soumission de la Demande
+
+1. Le promoteur vérifie la complétude de son dossier
+2. Accepte les conditions générales
+3. Clique sur "Soumettre pour validation"
+4. **Statut = "EN_ATTENTE"**
+5. Reçoit un email de confirmation de réception
+
+### Phase 4️⃣ : Traitement par l'Administrateur
+
+**Tableau de bord Admin :**
+```
+┌─────────────────────────────────────────────┐
+│  DEMANDES EN ATTENTE DE VALIDATION          │
+├─────────────────────────────────────────────┤
+│  Promoteur     │ Date    │ Score │ Action   │
+├────────────────┼─────────┼───────┼──────────┤
+│  Jean Dupont   │ 10/12   │ 95%   │ [Voir]   │
+│  Marie Kaboré  │ 09/12   │ 100%  │ [Voir]   │
+└─────────────────────────────────────────────┘
+```
+
+**Actions possibles :**
+
+#### ✅ **Approuver** (Statut → VALIDE)
+- Vérifie tous les documents
+- Valide l'authenticité
+- Clique sur "Approuver"
+- Le promoteur reçoit :
+  - ✉️ Email de validation
+  - 📱 SMS de bienvenue
+  - 🎉 Accès complet à la plateforme
+
+#### ❌ **Rejeter** (Statut → REJETE)
+- Sélectionne le motif de rejet :
+  - Documents invalides
+  - Informations incorrectes
+  - Activité non conforme
+  - Suspicion de fraude
+- Ajoute un commentaire explicatif
+- Le promoteur reçoit :
+  - ✉️ Email avec motif de rejet
+  - 🔄 Possibilité de soumettre une nouvelle demande
+
+#### ⚠️ **Demander complément** (Statut → INCOMPLET)
+- Coche les documents manquants/invalides
+- Ajoute des commentaires spécifiques
+- Le promoteur reçoit :
+  - ✉️ Email listant les éléments à corriger
+  - 📋 Accès pour compléter le dossier
+  - ⏰ Délai de 15 jours pour compléter
+
+### Phase 5️⃣ : Accès aux Fonctionnalités
+
+#### 🚫 Promoteur NON VALIDÉ (EN_ATTENTE, INCOMPLET, REJETE)
+**Peut :**
+- ✓ Se connecter à son compte
+- ✓ Voir son statut de validation
+- ✓ Compléter ses documents
+- ✓ Consulter les biens publiés (lecture seule)
+
+**Ne peut PAS :**
+- ✗ Ajouter un bien
+- ✗ Modifier un bien
+- ✗ Publier un bien
+- ✗ Recevoir des réservations
+
+#### ✅ Promoteur VALIDÉ
+**Accès complet :**
+- ✓ Ajouter des biens
+- ✓ Gérer ses biens (modifier, supprimer)
+- ✓ Publier/Dépublier
+- ✓ Recevoir des réservations
+- ✓ Consulter les paiements
+- ✓ Accéder aux statistiques
+- ✓ Gérer son tableau de bord
+
+## 🔐 Règles de Sécurité
+
+### Vérifications automatiques :
+- **Email unique** : Pas de doublon
+- **Téléphone unique** : Vérification par SMS
+- **SIRET/IFU** : Validation du format
+- **Documents** : Scan antivirus automatique
+
+### Contrôles manuels (Admin) :
+- Authenticité des documents
+- Cohérence des informations
+- Vérification des références
+- Recherche web sur l'entreprise
+
+## 📊 Statuts et Transitions
+
+```
+INSCRIPTION
+    ↓
+EN_ATTENTE ←──────────┐
+    ↓                  │
+    ├→ VALIDE          │
+    ├→ REJETE          │
+    └→ INCOMPLET ──────┘
+         ↓
+    SUSPENDU (admin)
+```
+
+### Détails des statuts :
+
+| Statut | Description | Actions disponibles |
+|--------|-------------|---------------------|
+| **EN_ATTENTE** | Dossier soumis, en cours de vérification | Aucune action promoteur |
+| **INCOMPLET** | Documents manquants ou invalides | Compléter le dossier |
+| **VALIDE** | Promoteur approuvé | Toutes fonctionnalités |
+| **REJETE** | Demande refusée | Nouvelle inscription possible après 30j |
+| **SUSPENDU** | Compte temporairement désactivé | Contacter l'admin |
+
+## 🔔 Système de Notifications
+
+### Promoteur reçoit :
+1. **À la soumission** : Confirmation de réception (Email + SMS)
+2. **En cours de traitement** : Email de suivi (J+2)
+3. **Validation** : Email + SMS de félicitations + Guide de démarrage
+4. **Rejet** : Email avec motifs détaillés
+5. **Documents manquants** : Email + Liste précise
+
+### Admin reçoit :
+1. Notification de nouvelle demande
+2. Alerte si dossier > 5 jours sans traitement
+3. Rapport hebdomadaire des validations
+
+## 📈 Tableau de Bord Admin
+
+**Métriques clés :**
+- Demandes en attente : **12**
+- Délai moyen de traitement : **2.5 jours**
+- Taux d'approbation : **78%**
+- Promoteurs actifs : **156**
+
+**Filtres disponibles :**
+- Par statut
+- Par date de soumission
+- Par score de complétude
+- Par ville
+
+## 🛡️ Mesures Anti-Fraude
+
+1. **Vérification croisée** : Recoupement des informations
+2. **Liste noire** : Promoteurs bannis (email, tél, SIRET)
+3. **Scoring automatique** : Détection des dossiers suspects
+4. **Limite de tentatives** : Max 3 soumissions/6 mois
+5. **Audit trail** : Historique complet des actions
+
+## 💡 Recommandations Techniques
+
+### Base de données :
+```sql
+-- Table promoteurs avec documents en attributs
+CREATE TABLE promoteurs (
+  id INT PRIMARY KEY,
+  -- Informations de base héritées de utilisateurs
+  raison_sociale VARCHAR(255),
+  type_structure VARCHAR(100),
+  numero_siret VARCHAR(50),
+  adresse_professionnelle TEXT,
+  ville VARCHAR(100),
+  description TEXT,
+  
+  -- Statut de validation
+  statut ENUM('EN_ATTENTE', 'VALIDE', 'INCOMPLET', 'REJETE', 'SUSPENDU'),
+  date_inscription TIMESTAMP,
+  date_validation TIMESTAMP,
+  valide_par INT,
+  motif_rejet TEXT,
+  commentaires_validation TEXT,
+  
+  -- Documents obligatoires (URLs vers fichiers stockés)
+  cnib_recto VARCHAR(255) NOT NULL,
+  cnib_verso VARCHAR(255) NOT NULL,
+  photo_promoteur VARCHAR(255) NOT NULL,
+  justificatif_domicile VARCHAR(255) NOT NULL,
+  registre_commerce VARCHAR(255) NOT NULL,
+  attestation_fiscale VARCHAR(255) NOT NULL,
+  
+  -- Documents optionnels
+  certificat_propriete VARCHAR(255),
+  assurance_rc VARCHAR(255),
+  
+  -- Statuts de vérification des documents
+  cnib_recto_verifie BOOLEAN DEFAULT FALSE,
+  cnib_verso_verifie BOOLEAN DEFAULT FALSE,
+  photo_verifiee BOOLEAN DEFAULT FALSE,
+  justificatif_verifie BOOLEAN DEFAULT FALSE,
+  registre_verifie BOOLEAN DEFAULT FALSE,
+  attestation_verifiee BOOLEAN DEFAULT FALSE,
+  
+  FOREIGN KEY (valide_par) REFERENCES administrateurs(id)
+);
+
+-- Trigger de vérification
+CREATE TRIGGER verifier_statut_avant_ajout_bien
+BEFORE INSERT ON biens
+FOR EACH ROW
+  IF (SELECT statut FROM promoteurs WHERE id = NEW.promoteur_id) != 'VALIDE'
+  THEN SIGNAL SQLSTATE '45000' 
+    SET MESSAGE_TEXT = 'Promoteur non validé';
+  END IF;
+```
+
+### Middleware Laravel :
+```php
+// Middleware: CheckPromoteurValide
+public function handle($request, Closure $next) {
+    if (auth()->user()->type === 'promoteur' 
+        && auth()->user()->statut !== 'VALIDE') {
+        return redirect()->route('validation.attente')
+            ->with('error', 'Votre compte doit être validé');
+    }
+    return $next($request);
+}
+
+// Méthode pour vérifier la complétude des documents
+public function calculerScoreCompletude(Promoteur $promoteur): int {
+    $documentsObligatoires = [
+        'cnib_recto',
+        'cnib_verso', 
+        'photo_promoteur',
+        'justificatif_domicile',
+        'registre_commerce',
+        'attestation_fiscale'
+    ];
+    
+    $documentsPresents = 0;
+    foreach ($documentsObligatoires as $doc) {
+        if (!empty($promoteur->$doc)) {
+            $documentsPresents++;
+        }
+    }
+    
+    return (int) (($documentsPresents / count($documentsObligatoires)) * 100);
+}
+
+// Controller pour validation admin
+public function verifierDocument(Request $request, $promoteurId, $typeDocument) {
+    $promoteur = Promoteur::findOrFail($promoteurId);
+    $champVerification = $typeDocument . '_verifie';
+    
+    $promoteur->$champVerification = $request->input('valide');
+    $promoteur->save();
+    
+    // Vérifier si tous les documents sont validés
+    $tousValides = $promoteur->cnib_recto_verifie 
+        && $promoteur->cnib_verso_verifie
+        && $promoteur->photo_verifiee
+        && $promoteur->justificatif_verifie
+        && $promoteur->registre_verifie
+        && $promoteur->attestation_verifiee;
+    
+    if ($tousValides) {
+        // Possibilité de valider automatiquement
+        // ou notifier l'admin que tous les docs sont OK
+    }
+    
+    return response()->json(['success' => true]);
+}
+```
+
+### Frontend React :
+```javascript
+// Hook personnalisé
+const usePromoteurAccess = () => {
+  const { user } = useAuth();
+  
+  const canAddBien = user?.type === 'promoteur' 
+    && user?.statut === 'VALIDE';
+  
+  const validationStatus = user?.statut;
+  const validationMessage = getStatusMessage(validationStatus);
+  
+  return { canAddBien, validationStatus, validationMessage };
+};
+
+// Composant d'upload de documents
+const DocumentUpload = ({ documentType, label, required = true }) => {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  
+  const handleUpload = async (e) => {
+    const selectedFile = e.target.files[0];
+    
+    // Vérifications
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      toast.error('Fichier trop volumineux (max 5 MB)');
+      return;
+    }
+    
+    if (!['image/jpeg', 'image/png', 'application/pdf'].includes(selectedFile.type)) {
+      toast.error('Format non accepté (JPG, PNG ou PDF uniquement)');
+      return;
+    }
+    
+    setUploading(true);
+    const formData = new FormData();
+    formData.append(documentType, selectedFile);
+    
+    try {
+      await axios.post('/api/promoteur/documents', formData);
+      toast.success('Document téléchargé avec succès');
+      setFile(selectedFile);
+    } catch (error) {
+      toast.error('Erreur lors du téléchargement');
+    } finally {
+      setUploading(false);
+    }
+  };
+  
+  return (
+    <div className="document-upload">
+      <label>{label} {required && <span className="text-red-500">*</span>}</label>
+      <input 
+        type="file" 
+        accept=".jpg,.jpeg,.png,.pdf"
+        onChange={handleUpload}
+        disabled={uploading}
+      />
+      {file && <span className="text-green-500">✓ {file.name}</span>}
+    </div>
+  );
+};
+
+// Formulaire complet d'inscription promoteur
+const InscriptionPromoteur = () => {
+  const documentsObligatoires = [
+    { type: 'cnib_recto', label: 'CNIB Recto' },
+    { type: 'cnib_verso', label: 'CNIB Verso' },
+    { type: 'photo_promoteur', label: 'Photo de profil' },
+    { type: 'justificatif_domicile', label: 'Justificatif de domicile' },
+    { type: 'registre_commerce', label: 'Registre de commerce' },
+    { type: 'attestation_fiscale', label: 'Attestation fiscale (IFU)' }
+  ];
+  
+  return (
+    <form>
+      <h2>Documents obligatoires</h2>
+      {documentsObligatoires.map(doc => (
+        <DocumentUpload 
+          key={doc.type}
+          documentType={doc.type}
+          label={doc.label}
+          required={true}
+        />
+      ))}
+      
+      <h2>Documents optionnels</h2>
+      <DocumentUpload 
+        documentType="certificat_propriete"
+        label="Certificat de propriété"
+        required={false}
+      />
+      <DocumentUpload 
+        documentType="assurance_rc"
+        label="Assurance RC"
+        required={false}
+      />
+      
+      <button type="submit">Soumettre pour validation</button>
+    </form>
+  );
+};
+```
+
+## ⏱️ Délais et SLA
+
+- **Traitement normal** : 24-48h
+- **Traitement complexe** : 3-5 jours
+- **Alerte admin** : Si > 5 jours
+- **Réponse au promoteur** : Sous 24h après décision
+- **Complément de documents** : 15 jours max
+
+## 📞 Support
+
+En cas de problème, le promoteur peut :
+- Consulter la FAQ validation
+- Contacter le support (formulaire dédié)
+- Joindre l'équipe : +226 XX XX XX XX
+- Email prioritaire : validation@locafri.com

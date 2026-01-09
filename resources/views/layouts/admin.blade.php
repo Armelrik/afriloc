@@ -107,10 +107,10 @@
 
 <script src="{{ asset('js/utils.js') }}"></script>
 
+
 <!-- Scripts customs -->
 @stack('scripts')
 
 </body>
 
 </html>
-

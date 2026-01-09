@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Payments;
 
-use App\Models\Payment;
+use App\Models\Paiement;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,21 +18,21 @@ class PaymentList extends Component
 
     public function render()
     {
-        $query = Payment::with(['user', 'booking.property']);
+        $query = Paiement::with(['reservation.bien']);
 
         if ($this->statusFilter) {
-            $query->where('status', $this->statusFilter);
+            $query->where('statut', $this->statusFilter);
         }
 
         if ($this->methodFilter) {
-            $query->where('payment_method', $this->methodFilter);
+            $query->where('methode_paiement', $this->methodFilter);
         }
 
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('transaction_id', 'like', '%' . $this->search . '%')
-                  ->orWhere('payment_reference', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('user', function ($u) {
+                $q->where('reference_transaction', 'like', '%' . $this->search . '%')
+                  ->orWhere('numero_recu', 'like', '%' . $this->search . '%')
+                  ->orWhereHas('reservation.client', function ($u) {
                       $u->where('name', 'like', '%' . $this->search . '%')
                         ->orWhere('email', 'like', '%' . $this->search . '%');
                   });
@@ -42,10 +42,10 @@ class PaymentList extends Component
         $payments = $query->latest()->paginate(15);
 
         $stats = [
-            'total' => Payment::sum('amount'),
-            'completed' => Payment::completed()->sum('amount'),
-            'pending' => Payment::pending()->count(),
-            'failed' => Payment::where('status', 'failed')->count(),
+            'total' => Paiement::sum('montant'),
+            'completed' => Paiement::where('statut', 'VALIDE')->sum('montant'),
+            'pending' => Paiement::where('statut', 'EN_ATTENTE')->count(),
+            'failed' => Paiement::where('statut', 'ECHOUE')->count(),
         ];
 
         return view('livewire.admin.payments.payment-list', [
@@ -57,6 +57,28 @@ class PaymentList extends Component
     public function clearFilters()
     {
         $this->reset(['statusFilter', 'search', 'methodFilter']);
+    }
+
+    public function viewDetails($id)
+    {
+        // Redirect to payment details page
+        return redirect()->route('admin.payments.show', $id);
+    }
+
+    public function markAsCompleted($id)
+    {
+        $payment = Paiement::findOrFail($id);
+        $payment->marquerValide();
+        
+        session()->flash('message', 'Payment marked as completed.');
+    }
+
+    public function refund($id)
+    {
+        $payment = Paiement::findOrFail($id);
+        $payment->update(['statut' => 'REMBOURSE']);
+        
+        session()->flash('message', 'Payment refunded.');
     }
 }
 

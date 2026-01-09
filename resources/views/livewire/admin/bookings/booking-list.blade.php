@@ -28,10 +28,10 @@
         <div class="col-md-2">
             <select wire:model.live="statusFilter" class="form-control">
                 <option value="">Tous les statuts</option>
-                <option value="pending">En attente</option>
-                <option value="confirmed">Confirmée</option>
-                <option value="cancelled">Annulée</option>
-                <option value="completed">Terminée</option>
+                <option value="EN_ATTENTE">En attente</option>
+                <option value="CONFIRME">Confirmée</option>
+                <option value="ANNULE">Annulée</option>
+                <option value="TERMINE">Terminée</option>
             </select>
         </div>
     </div>
@@ -64,14 +64,14 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <strong>{{ $booking->user->name ?? $booking->customer_name }}</strong>
+                                            <strong>{{ $booking->client->name ?? 'N/A' }}</strong>
                                         </div>
-                                        <small class="text-muted">{{ $booking->user->email ?? $booking->customer_email }}</small>
+                                        <small class="text-muted">{{ $booking->client->email ?? 'N/A' }}</small>
                                     </td>
                                     <td>
-                                        @if($booking->property)
-                                            <a href="{{ route('properties.show', $booking->property->id) }}" target="_blank">
-                                                {{ $booking->property->title }}
+                                        @if($booking->bien)
+                                            <a href="#" target="_blank">
+                                                {{ $booking->bien->titre }}
                                             </a>
                                         @else
                                             <span class="text-muted">N/A</span>
@@ -80,24 +80,24 @@
                                     <td class="text-nowrap">
                                         <small>
                                             <i class="fas fa-calendar mr-1"></i>
-                                            {{ $booking->start_date->format('d/m/Y') }} <br>
+                                            {{ $booking->date_debut ? $booking->date_debut->format('d/m/Y') : 'N/A' }} <br>
                                             <i class="fas fa-arrow-right mr-1"></i>
-                                            {{ $booking->end_date->format('d/m/Y') }}
+                                            {{ $booking->date_fin ? $booking->date_fin->format('d/m/Y') : 'N/A' }}
                                         </small>
                                     </td>
-                                    <td>{{ number_format($booking->total_price, 0, ',', ' ') }} FCFA</td>
+                                    <td>{{ number_format($booking->montant_total ?? 0, 0, ',', ' ') }} FCFA</td>
                                     <td>
-                                        @if($booking->status == 'confirmed')
+                                        @if($booking->statut == 'CONFIRME')
                                             <span class="badge badge-success">
                                                 <i class="fas fa-check-circle mr-1"></i>
                                                 Confirmée
                                             </span>
-                                        @elseif($booking->status == 'pending')
+                                        @elseif($booking->statut == 'EN_ATTENTE')
                                             <span class="badge badge-warning">
                                                 <i class="fas fa-clock mr-1"></i>
                                                 En attente
                                             </span>
-                                        @elseif($booking->status == 'cancelled')
+                                        @elseif($booking->statut == 'ANNULE')
                                             <span class="badge badge-danger">
                                                 <i class="fas fa-times-circle mr-1"></i>
                                                 Annulée
@@ -110,13 +110,20 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <select wire:change="updateStatus({{ $booking->id }}, $event.target.value)" 
-                                                class="form-control form-control-sm">
-                                            <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>En attente</option>
-                                            <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confirmée</option>
-                                            <option value="cancelled" {{ $booking->status == 'cancelled' ? 'selected' : '' }}>Annulée</option>
-                                            <option value="completed" {{ $booking->status == 'completed' ? 'selected' : '' }}>Terminée</option>
-                                        </select>
+                                        <div class="d-flex flex-column">
+                                            <a href="{{ route('admin.bookings.show', $booking->id) }}"
+                                               class="btn btn-sm btn-primary mb-2">
+                                                <i class="fas fa-eye mr-1"></i>
+                                                {{ __('messages.admin.view') }}
+                                            </a>
+                                            <select wire:change="updateStatus({{ $booking->id }}, $event.target.value)" 
+                                                    class="form-control form-control-sm">
+                                                <option value="EN_ATTENTE" {{ $booking->statut == 'EN_ATTENTE' ? 'selected' : '' }}>En attente</option>
+                                                <option value="CONFIRME" {{ $booking->statut == 'CONFIRME' ? 'selected' : '' }}>Confirmée</option>
+                                                <option value="ANNULE" {{ $booking->statut == 'ANNULE' ? 'selected' : '' }}>Annulée</option>
+                                                <option value="TERMINE" {{ $booking->statut == 'TERMINE' ? 'selected' : '' }}>Terminée</option>
+                                            </select>
+                                        </div>
                                     </td>
                                 </tr>
                                 @empty

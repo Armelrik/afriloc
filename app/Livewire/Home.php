@@ -2,15 +2,15 @@
 
 namespace App\Livewire;
 
-use App\Models\Property;
+use App\Models\Bien;
 use Livewire\Component;
 
 class Home extends Component
 {
     public function render()
     {
-        $featuredProperties = Property::featured()
-            ->available()
+        $featuredProperties = Bien::publie()
+            ->disponible()
             ->limit(6)
             ->get();
 

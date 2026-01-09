@@ -25,20 +25,20 @@
         <div class="col-md-3">
             <select wire:model.live="statusFilter" class="form-control">
                 <option value="">Tous les statuts</option>
-                <option value="pending">En attente</option>
-                <option value="processing">En traitement</option>
-                <option value="completed">Complété</option>
-                <option value="failed">Échoué</option>
-                <option value="refunded">Remboursé</option>
+                <option value="EN_ATTENTE">En attente</option>
+                <option value="EN_COURS">En traitement</option>
+                <option value="VALIDE">Validé</option>
+                <option value="ECHOUE">Échoué</option>
+                <option value="REMBOURSE">Remboursé</option>
             </select>
         </div>
         <div class="col-md-3">
             <select wire:model.live="methodFilter" class="form-control">
                 <option value="">Tous les modes</option>
-                <option value="mobile_money">Mobile Money</option>
-                <option value="card">Carte bancaire</option>
-                <option value="cash">Espèces</option>
-                <option value="bank_transfer">Virement bancaire</option>
+                <option value="MOBILE_MONEY">Mobile Money</option>
+                <option value="CARTE">Carte bancaire</option>
+                <option value="ESPECES">Espèces</option>
+                <option value="VIREMENT">Virement bancaire</option>
             </select>
         </div>
     </div>
@@ -72,43 +72,43 @@
                                 @forelse ($payments as $payment)
                                 <tr>
                                     <td>
-                                        <code>{{ $payment->payment_reference ?? 'N/A' }}</code>
+                                        <code>{{ $payment->reference_transaction ?? $payment->numero_recu ?? 'N/A' }}</code>
                                     </td>
-                                    <td>{{ $payment->user->name ?? 'N/A' }}</td>
+                                    <td>{{ $payment->reservation->client->name ?? 'N/A' }}</td>
                                     <td>
-                                        @if($payment->booking)
+                                        @if($payment->reservation)
                                             <a href="{{ route('admin.bookings') }}">
-                                                #{{ $payment->booking->id }}
+                                                #{{ $payment->reservation->id }}
                                             </a>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <strong>{{ number_format($payment->amount, 0, ',', ' ') }} FCFA</strong>
+                                        <strong>{{ number_format($payment->montant ?? 0, 0, ',', ' ') }} FCFA</strong>
                                     </td>
                                     <td>
                                         <span class="badge badge-secondary">
-                                            {{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}
+                                            {{ ucfirst(str_replace('_', ' ', $payment->methode_paiement)) }}
                                         </span>
                                     </td>
                                     <td>
-                                        @if($payment->status == 'completed')
+                                        @if($payment->statut == 'VALIDE')
                                             <span class="badge badge-success">
                                                 <i class="fas fa-check-circle mr-1"></i>
-                                                Complété
+                                                Validé
                                             </span>
-                                        @elseif($payment->status == 'pending')
+                                        @elseif($payment->statut == 'EN_ATTENTE')
                                             <span class="badge badge-warning">
                                                 <i class="fas fa-clock mr-1"></i>
                                                 En attente
                                             </span>
-                                        @elseif($payment->status == 'processing')
+                                        @elseif($payment->statut == 'EN_COURS')
                                             <span class="badge badge-info">
                                                 <i class="fas fa-spinner mr-1"></i>
                                                 En traitement
                                             </span>
-                                        @elseif($payment->status == 'failed')
+                                        @elseif($payment->statut == 'ECHOUE')
                                             <span class="badge badge-danger">
                                                 <i class="fas fa-times-circle mr-1"></i>
                                                 Échoué
@@ -120,16 +120,16 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td>{{ $payment->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $payment->date_paiement ? $payment->date_paiement->format('d/m/Y H:i') : $payment->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button wire:click="viewDetails({{ $payment->id }})" 
-                                                    class="btn btn-sm btn-info" 
-                                                    data-toggle="tooltip" 
-                                                    title="Voir détails">
+                                            <a href="{{ route('admin.payments.show', $payment->id) }}" 
+                                               class="btn btn-sm btn-info" 
+                                               data-toggle="tooltip" 
+                                               title="Voir détails">
                                                 <i class="fas fa-eye"></i>
-                                            </button>
-                                            @if($payment->status == 'pending')
+                                            </a>
+                                            @if($payment->statut == 'EN_ATTENTE')
                                                 <button wire:click="markAsCompleted({{ $payment->id }})" 
                                                         class="btn btn-sm btn-success" 
                                                         data-toggle="tooltip" 
@@ -137,7 +137,7 @@
                                                     <i class="fas fa-check"></i>
                                                 </button>
                                             @endif
-                                            @if($payment->status == 'completed')
+                                            @if($payment->statut == 'VALIDE')
                                                 <button wire:click="refund({{ $payment->id }})" 
                                                         class="btn btn-sm btn-warning" 
                                                         onclick="return confirm('Rembourser ce paiement ?')"

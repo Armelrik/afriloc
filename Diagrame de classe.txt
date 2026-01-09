@@ -1,0 +1,274 @@
+classDiagram
+    class Utilisateur {
+        +int id
+        +string nom
+        +string prenom
+        +string email
+        +string telephone
+        +string motDePasse
+        +string typeUtilisateur
+        +date dateInscription
+        +bool estActif
+        +creerCompte()
+        +seConnecter()
+        +modifierProfil()
+        +supprimerCompte()
+    }
+
+    class Client {
+        +string adresse
+        +string villeResidence
+        +consulterBiens()
+        +rechercherBiens()
+        +filtrerBiens()
+        +reserverBien()
+        +effectuerPaiement()
+        +consulterReservations()
+    }
+
+    class Promoteur {
+        +string raisonSociale
+        +string typeStructure
+        +string numeroSiret
+        +string adresseProfessionnelle
+        +string ville
+        +string description
+        +string statut
+        +date dateInscription
+        +date dateValidation
+        +int validePar
+        +string motifRejet
+        +string cnibRecto
+        +string cnibVerso
+        +string photoPromoteur
+        +string justificatifDomicile
+        +string registreCommerce
+        +string attestationFiscale
+        +string certificatPropriete
+        +string assuranceRC
+        +bool cnibRectoVerifie
+        +bool cnibVersoVerifie
+        +bool photoVerifiee
+        +bool justificatifVerifie
+        +bool registreVerifie
+        +bool attestationVerifiee
+        +string commentairesValidation
+        +soumettreInscription()
+        +consulterStatutValidation()
+        +completerDocuments()
+        +telechargerDocument()
+        +ajouterBien()
+        +modifierBien()
+        +supprimerBien()
+        +consulterReservations()
+        +consulterPaiements()
+        +verifierAcces()
+    }
+
+    class DemandeValidation {
+        +int id
+        +int promoteurId
+        +string statut
+        +date dateDemande
+        +date dateTraitement
+        +int traiteParAdminId
+        +string commentaires
+        +string motifRejet
+        +int scoreCompletude
+        +soumettre()
+        +approuver()
+        +rejeter()
+        +demanderComplement()
+        +notifierPromoteur()
+        +calculerScore()
+    }
+
+    class Administrateur {
+        +string role
+        +string permissions
+        +int niveauAcces
+        +validerPromoteur()
+        +rejeterPromoteur()
+        +demanderDocumentsComplementaires()
+        +consulterDemandesEnAttente()
+        +verifierDocuments()
+        +gererUtilisateurs()
+        +gererBiens()
+        +gererCommissions()
+        +consulterStatistiques()
+        +suspendreCompte()
+        +reactiverCompte()
+    }
+
+    class Bien {
+        +int id
+        +int promoteurId
+        +string titre
+        +string description
+        +string typeBien
+        +string adresse
+        +string ville
+        +string quartier
+        +float superficie
+        +int nombrePieces
+        +int nombreChambres
+        +int nombreSallesBain
+        +float prixLocation
+        +string frequenceLocation
+        +float depotGarantie
+        +float avance
+        +string disponibilite
+        +string statut
+        +date dateAjout
+        +date datePublication
+        +bool estPublie
+        +ajouterPhotos()
+        +ajouterVideos()
+        +modifierDetails()
+        +changerDisponibilite()
+        +publier()
+        +depublier()
+    }
+
+    class MediaBien {
+        +int id
+        +int bienId
+        +string typeMedia
+        +string urlMedia
+        +string description
+        +int ordre
+        +date dateAjout
+    }
+
+    class Reservation {
+        +int id
+        +int clientId
+        +int bienId
+        +date dateDebut
+        +date dateFin
+        +int nombrePersonnes
+        +float montantTotal
+        +string statut
+        +string commentaires
+        +date dateReservation
+        +date dateConfirmation
+        +confirmer()
+        +annuler()
+        +modifier()
+        +notifierPromoteur()
+        +notifierClient()
+    }
+
+    class Paiement {
+        +int id
+        +int reservationId
+        +float montant
+        +string methodePaiement
+        +string statut
+        +date datePaiement
+        +string referenceTransaction
+        +string numeroRecu
+        +effectuerPaiement()
+        +genererRecu()
+        +rembourser()
+        +verifierStatut()
+    }
+
+    class PaiementMobileMoney {
+        +string operateur
+        +string numeroTelephone
+        +string codeTransaction
+        +initierPaiement()
+        +confirmerPaiement()
+    }
+
+    class PaiementCarte {
+        +string numeroCarteMasque
+        +string typeCarte
+        +string tokenPaiement
+        +authoriserPaiement()
+        +capturerPaiement()
+    }
+
+    class Commission {
+        +int id
+        +int paiementId
+        +int promoteurId
+        +float pourcentagePlateforme
+        +float montantCommission
+        +float montantPromoteur
+        +date dateCalcul
+        +bool estTransfere
+        +date dateTransfert
+        +calculerCommission()
+        +transfererPromoteur()
+        +genererRapport()
+    }
+
+    class Notification {
+        +int id
+        +int utilisateurId
+        +string type
+        +string canal
+        +string contenu
+        +string priorite
+        +date dateEnvoi
+        +bool estLue
+        +envoyerSMS()
+        +envoyerEmail()
+        +marquerCommeLue()
+    }
+
+    class Recherche {
+        +string localisation
+        +float prixMin
+        +float prixMax
+        +float superficieMin
+        +int nombrePiecesMin
+        +string typeBien
+        +string disponibilite
+        +effectuerRecherche()
+        +appliquerFiltres()
+    }
+
+    class HistoriqueValidation {
+        +int id
+        +int promoteurId
+        +string action
+        +int effectueParId
+        +date dateAction
+        +string details
+        +string ancienStatut
+        +string nouveauStatut
+    }
+
+    Utilisateur <|-- Client
+    Utilisateur <|-- Promoteur
+    Utilisateur <|-- Administrateur
+    
+    Promoteur "1" --> "1" DemandeValidation : soumet
+    DemandeValidation "*" --> "1" Administrateur : traitee_par
+    DemandeValidation "1" --> "*" HistoriqueValidation : genere
+    
+    Promoteur "1" --> "*" Bien : possede
+    Bien "1" --> "*" MediaBien : contient
+    
+    Client "1" --> "*" Reservation : effectue
+    Bien "1" --> "*" Reservation : fait_objet_de
+    
+    Reservation "1" --> "1" Paiement : necessite
+    Paiement <|-- PaiementMobileMoney
+    Paiement <|-- PaiementCarte
+    
+    Paiement "1" --> "1" Commission : genere
+    Commission "*" --> "1" Promoteur : revient_a
+    
+    Utilisateur "1" --> "*" Notification : recoit
+    Reservation --> Notification : declenche
+    Paiement --> Notification : declenche
+    DemandeValidation --> Notification : declenche
+    
+    Client --> Recherche : utilise
+    
+    Administrateur "1" --> "*" HistoriqueValidation : cree
+    Administrateur "1" --> "*" Promoteur : valide

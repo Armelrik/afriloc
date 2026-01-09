@@ -2,16 +2,29 @@
 
 namespace App\Livewire\Properties;
 
-use App\Models\Property;
+use App\Models\Bien;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Show extends Component
 {
-    public Property $property;
+    public Bien $property;
+    public $existingReservation = null;
 
     public function mount($id)
     {
-        $this->property = Property::findOrFail($id);
+        $this->property = Bien::with(['medias', 'promoteur.user'])
+            ->publie()
+            ->findOrFail($id);
+            
+        // Check if user has an existing reservation for this property
+        if (Auth::check()) {
+            $this->existingReservation = Reservation::where('client_id', Auth::id())
+                ->where('bien_id', $id)
+                ->whereIn('statut', ['EN_ATTENTE', 'CONFIRME', 'TERMINE'])
+                ->first();
+        }
     }
 
     public function render()

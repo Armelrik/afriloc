@@ -34,18 +34,20 @@
         <div class="col-md-2">
             <select wire:model.live="typeFilter" class="form-control">
                 <option value="">Tous les types</option>
-                <option value="apartment">Appartement</option>
-                <option value="house">Maison</option>
-                <option value="villa">Villa</option>
-                <option value="studio">Studio</option>
+                <option value="appartement">Appartement</option>
+                <option value="maison">Maison</option>
+                <option value="terrain">Terrain</option>
+                <option value="bureau">Bureau</option>
+                <option value="local_commercial">Local commercial</option>
             </select>
         </div>
         <div class="col-md-2">
             <select wire:model.live="statusFilter" class="form-control">
                 <option value="">Tous les statuts</option>
-                <option value="available">Disponible</option>
-                <option value="occupied">Occupée</option>
-                <option value="maintenance">Maintenance</option>
+                <option value="disponible">Disponible</option>
+                <option value="loue">Loué</option>
+                <option value="reserve">Réservé</option>
+                <option value="indisponible">Indisponible</option>
             </select>
         </div>
         <div class="col-md-2">
@@ -84,55 +86,65 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            @if($property->images && count($property->images) > 0)
-                                                <img src="{{ asset('storage/' . $property->images[0]) }}" 
-                                                     alt="{{ $property->title }}" 
+                                            @if($property->medias && $property->medias->where('type_media', 'IMAGE')->first())
+                                                <img src="{{ asset('storage/' . $property->medias->where('type_media', 'IMAGE')->first()->url_media) }}" 
+                                                     alt="{{ $property->titre }}" 
                                                      class="img-thumbnail mr-2" 
                                                      style="width: 50px; height: 50px; object-fit: cover;">
                                             @endif
-                                            <span>{{ $property->title }}</span>
+                                            <span>{{ $property->titre }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <span class="badge badge-info">
-                                            {{ ucfirst($property->type) }}
+                                            {{ ucfirst($property->type_bien) }}
                                         </span>
                                     </td>
-                                    <td>{{ number_format($property->price, 0, ',', ' ') }} FCFA</td>
-                                    <td>{{ $property->promoter->user->name ?? 'N/A' }}</td>
+                                    <td>{{ number_format($property->prix_location ?? 0, 0, ',', ' ') }} FCFA</td>
+                                    <td>{{ $property->promoteur->user->name ?? 'N/A' }}</td>
                                     <td>
-                                        @if($property->availability_status == 'available')
+                                        @if($property->disponibilite == 'disponible')
                                             <span class="badge badge-success">
                                                 <i class="fas fa-check-circle mr-1"></i>
                                                 Disponible
                                             </span>
-                                        @elseif($property->availability_status == 'occupied')
+                                        @elseif($property->disponibilite == 'loue')
                                             <span class="badge badge-danger">
                                                 <i class="fas fa-times-circle mr-1"></i>
-                                                Occupée
+                                                Loué
+                                            </span>
+                                        @elseif($property->disponibilite == 'reserve')
+                                            <span class="badge badge-warning">
+                                                <i class="fas fa-clock mr-1"></i>
+                                                Réservé
+                                            </span>
+                                        @elseif($property->disponibilite == 'indisponible')
+                                            <span class="badge badge-secondary">
+                                                <i class="fas fa-ban mr-1"></i>
+                                                Indisponible
                                             </span>
                                         @else
-                                            <span class="badge badge-warning">
-                                                <i class="fas fa-tools mr-1"></i>
-                                                Maintenance
+                                            <span class="badge badge-secondary">
+                                                <i class="fas fa-ban mr-1"></i>
+                                                {{ ucfirst($property->disponibilite ?? 'N/A') }}
                                             </span>
                                         @endif
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('properties.show', $property->id) }}" 
+                                            <a href="{{ route('admin.properties.show', $property->id) }}" 
                                                class="btn btn-sm btn-info" 
                                                data-toggle="tooltip" 
                                                title="Voir">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="/admin/properties/{{ $property->id }}/edit" 
+                                            <a href="{{ route('admin.properties.edit', $property->id) }}" 
                                                class="btn btn-sm btn-warning" 
                                                data-toggle="tooltip" 
                                                title="Modifier">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button wire:click="deleteProperty({{ $property->id }})" 
+                                            <button wire:click="delete({{ $property->id }})" 
                                                     class="btn btn-sm btn-danger" 
                                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette propriété ?')"
                                                     data-toggle="tooltip" 

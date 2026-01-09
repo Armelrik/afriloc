@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Properties;
 
-use App\Models\Property;
+use App\Models\Bien;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -52,63 +52,66 @@ class Index extends Component
 
     public function render()
     {
-        $properties = Property::query()
+        $properties = Bien::query()
+            ->publie()
+            ->with(['medias', 'promoteur'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('title_fr', 'like', '%' . $this->search . '%')
-                      ->orWhere('title_en', 'like', '%' . $this->search . '%')
-                      ->orWhere('location', 'like', '%' . $this->search . '%')
-                      ->orWhere('address', 'like', '%' . $this->search . '%');
+                    $q->where('titre', 'like', '%' . $this->search . '%')
+                      ->orWhere('description', 'like', '%' . $this->search . '%')
+                      ->orWhere('ville', 'like', '%' . $this->search . '%')
+                      ->orWhere('adresse', 'like', '%' . $this->search . '%')
+                      ->orWhere('quartier', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->typeFilter, function ($query) {
-                $query->where('type', $this->typeFilter);
+                $query->where('type_bien', $this->typeFilter);
             })
             ->when($this->location, function ($query) {
-                $query->where('location', 'like', '%' . $this->location . '%');
+                $query->where('ville', 'like', '%' . $this->location . '%');
             })
             ->when($this->minPrice, function ($query) {
-                $query->where('price', '>=', $this->minPrice);
+                $query->where('prix_location', '>=', $this->minPrice);
             })
             ->when($this->maxPrice, function ($query) {
-                $query->where('price', '<=', $this->maxPrice);
+                $query->where('prix_location', '<=', $this->maxPrice);
             })
             ->when($this->bedrooms, function ($query) {
-                $query->where('bedrooms', '>=', $this->bedrooms);
+                $query->where('nombre_chambres', '>=', $this->bedrooms);
             })
             ->when($this->bathrooms, function ($query) {
-                $query->where('bathrooms', '>=', $this->bathrooms);
+                $query->where('nombre_salles_bain', '>=', $this->bathrooms);
             })
             ->when($this->minArea, function ($query) {
-                $query->where('area', '>=', $this->minArea);
+                $query->where('superficie', '>=', $this->minArea);
             })
             ->when($this->maxArea, function ($query) {
-                $query->where('area', '<=', $this->maxArea);
+                $query->where('superficie', '<=', $this->maxArea);
             })
             ->when($this->availabilityStatus, function ($query) {
-                $query->where('availability_status', $this->availabilityStatus);
+                $query->where('disponibilite', $this->availabilityStatus);
             })
             ->when(!$this->availabilityStatus, function ($query) {
-                $query->available();
+                $query->disponible();
             });
 
         // Apply sorting
         switch ($this->sortBy) {
             case 'price_asc':
-                $properties->orderBy('price', 'asc');
+                $properties->orderBy('prix_location', 'asc');
                 break;
             case 'price_desc':
-                $properties->orderBy('price', 'desc');
+                $properties->orderBy('prix_location', 'desc');
                 break;
             case 'area_asc':
-                $properties->orderBy('area', 'asc');
+                $properties->orderBy('superficie', 'asc');
                 break;
             case 'area_desc':
-                $properties->orderBy('area', 'desc');
+                $properties->orderBy('superficie', 'desc');
                 break;
             case 'latest':
             default:
-                $properties->latest();
+                $properties->latest('date_ajout');
                 break;
         }
 

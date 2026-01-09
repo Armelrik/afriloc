@@ -67,6 +67,74 @@
         </div>
     </div>
 
+    <!-- Additional Stats Row -->
+    <div class="row mt-3">
+        <!-- Pending Validations -->
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-info hover-lift">
+                <div class="inner">
+                    <h3>{{ number_format($stats['pending_validations'] ?? 0) }}</h3>
+                    <p>Validations en attente</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <a href="{{ route('admin.validations.index') }}" class="small-box-footer">
+                    Plus d'infos <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Pending Commissions -->
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-secondary hover-lift">
+                <div class="inner">
+                    <h3>{{ number_format($stats['pending_commissions'] ?? 0) }}</h3>
+                    <p>Commissions en attente</p>
+                    <small>{{ number_format($stats['pending_commissions_amount'] ?? 0, 0, ',', ' ') }} FCFA</small>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <a href="{{ route('admin.commissions.index') }}" class="small-box-footer">
+                    Plus d'infos <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Total Clients -->
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-success hover-lift">
+                <div class="inner">
+                    <h3>{{ number_format($stats['total_clients'] ?? 0) }}</h3>
+                    <p>Clients ({{ $stats['active_clients'] ?? 0 }} actifs)</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <a href="{{ route('admin.clients.index') }}" class="small-box-footer">
+                    Plus d'infos <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Unread Notifications -->
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-warning hover-lift">
+                <div class="inner">
+                    <h3>{{ number_format($stats['unread_notifications'] ?? 0) }}</h3>
+                    <p>Notifications non lues</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <a href="{{ route('admin.notifications.index') }}" class="small-box-footer">
+                    Plus d'infos <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Charts Row -->
     <div class="row">
         <!-- Monthly Revenue Chart -->
@@ -135,18 +203,18 @@
                             <tbody>
                                 @forelse($recentBookings ?? [] as $booking)
                                 <tr>
-                                    <td>{{ $booking->property->title ?? 'N/A' }}</td>
-                                    <td>{{ $booking->user->name ?? 'N/A' }}</td>
+                                    <td>{{ isset($booking->bien) && $booking->bien ? $booking->bien->titre : 'N/A' }}</td>
+                                    <td>{{ isset($booking->client) && $booking->client ? $booking->client->name : 'N/A' }}</td>
                                     <td>
-                                        @if($booking->status == 'confirmed')
+                                        @if(isset($booking->statut) && $booking->statut == 'CONFIRME')
                                             <span class="badge badge-success">Confirmée</span>
-                                        @elseif($booking->status == 'pending')
+                                        @elseif(isset($booking->statut) && $booking->statut == 'EN_ATTENTE')
                                             <span class="badge badge-warning">En attente</span>
                                         @else
-                                            <span class="badge badge-secondary">{{ $booking->status }}</span>
+                                            <span class="badge badge-secondary">{{ $booking->statut ?? 'N/A' }}</span>
                                         @endif
                                     </td>
-                                    <td>{{ $booking->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ isset($booking->created_at) && $booking->created_at ? $booking->created_at->format('d/m/Y') : 'N/A' }}</td>
                                 </tr>
                                 @empty
                                 <tr>
@@ -190,11 +258,11 @@
                             <tbody>
                                 @forelse($recentProperties ?? [] as $property)
                                 <tr>
-                                    <td>{{ $property->title }}</td>
-                                    <td>{{ ucfirst($property->type) }}</td>
-                                    <td>{{ number_format($property->price, 0, ',', ' ') }} FCFA</td>
+                                    <td>{{ isset($property->titre) ? $property->titre : 'N/A' }}</td>
+                                    <td>{{ isset($property->type_bien) ? ucfirst($property->type_bien) : 'N/A' }}</td>
+                                    <td>{{ number_format(isset($property->prix_location) ? $property->prix_location : 0, 0, ',', ' ') }} FCFA</td>
                                     <td>
-                                        @if($property->availability_status == 'available')
+                                        @if(isset($property->disponibilite) && $property->disponibilite == 'DISPONIBLE')
                                             <span class="badge badge-success">Disponible</span>
                                         @else
                                             <span class="badge badge-danger">Occupée</span>

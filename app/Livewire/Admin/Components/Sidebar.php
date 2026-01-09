@@ -2,8 +2,7 @@
 
 namespace App\Livewire\Admin\Components;
 
-use App\Models\MaintenanceRequest;
-use App\Models\Promoter;
+use App\Models\Promoteur;
 use Livewire\Component;
 
 class Sidebar extends Component
@@ -14,10 +13,9 @@ class Sidebar extends Component
 
     public function mount()
     {
-        $this->pendingPromotersCount = Promoter::pending()->count();
-        $this->urgentMaintenanceCount = MaintenanceRequest::urgent()
-            ->whereIn('status', ['pending', 'in_progress'])
-            ->count();
+        $this->pendingPromotersCount = Promoteur::enAttente()->count();
+        // MaintenanceRequest n'existe plus, donc on met 0
+        $this->urgentMaintenanceCount = 0;
     }
 
     public function toggleSidebar()

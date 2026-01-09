@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Client\Bookings;
 
-use App\Models\Booking;
+use App\Models\Reservation;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,12 +14,22 @@ class BookingList extends Component
 
     public function render()
     {
-        $query = Booking::where('user_id', auth()->id())
-            ->with(['property', 'payments'])
-            ->orderBy('created_at', 'desc');
+        $query = Reservation::where('client_id', auth()->id())
+            ->with(['bien', 'paiement'])
+            ->orderBy('date_reservation', 'desc');
 
         if ($this->statusFilter !== 'all') {
-            $query->where('status', $this->statusFilter);
+            // Map filter values to database statuses
+            $statusMap = [
+                'pending' => 'EN_ATTENTE',
+                'confirmed' => 'CONFIRME',
+                'active' => 'CONFIRME',
+                'completed' => 'TERMINE',
+            ];
+            
+            if (isset($statusMap[$this->statusFilter])) {
+                $query->where('statut', $statusMap[$this->statusFilter]);
+            }
         }
 
         $bookings = $query->paginate(10);
@@ -31,13 +41,13 @@ class BookingList extends Component
 
     public function cancelBooking($bookingId)
     {
-        $booking = Booking::where('id', $bookingId)
-            ->where('user_id', auth()->id())
+        $booking = Reservation::where('id', $bookingId)
+            ->where('client_id', auth()->id())
             ->first();
 
-        if ($booking && $booking->status === 'pending') {
-            $booking->update(['status' => 'cancelled']);
-            session()->flash('success', __('messages.booking.cancelled_success'));
+        if ($booking && $booking->statut === 'EN_ATTENTE') {
+            $booking->update(['statut' => 'ANNULE']);
+            session()->flash('success', 'Réservation annulée avec succès');
         }
     }
 }

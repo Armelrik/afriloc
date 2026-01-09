@@ -37,11 +37,11 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.properties.type') }}</label>
                     <select wire:model.live="typeFilter" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
                         <option value="">{{ __('messages.properties.all_types') }}</option>
-                        <option value="house">{{ __('messages.properties.house') }}</option>
-                        <option value="apartment">{{ __('messages.properties.apartment') }}</option>
-                        <option value="villa">{{ __('messages.properties.villa') }}</option>
-                        <option value="studio">{{ __('messages.properties.studio') }}</option>
-                        <option value="land">{{ __('messages.properties.land') }}</option>
+                        <option value="maison">{{ __('messages.properties.house') }}</option>
+                        <option value="appartement">{{ __('messages.properties.apartment') }}</option>
+                        <option value="terrain">{{ __('messages.properties.land') }}</option>
+                        <option value="bureau">{{ __('messages.properties.office') }}</option>
+                        <option value="local_commercial">{{ __('messages.properties.commercial') }}</option>
                     </select>
                 </div>
             </div>

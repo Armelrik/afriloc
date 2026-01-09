@@ -1,0 +1,211 @@
+graph TB
+    subgraph "Système LocAfri.com"
+        
+        subgraph "Gestion des Comptes"
+            UC1[Créer un compte client]
+            UC2[Se connecter]
+            UC3[Modifier profil]
+            UC4[Réinitialiser mot de passe]
+        end
+        
+        subgraph "Inscription Promoteur - Workflow Validation"
+            UC43[S'inscrire comme promoteur]
+            UC44[Remplir formulaire inscription]
+            UC45[Télécharger documents obligatoires]
+            UC46[Soumettre demande validation]
+            UC47[Consulter statut validation]
+            UC48[Compléter documents manquants]
+            UC49[Recevoir notification validation]
+        end
+        
+        subgraph "Validation Promoteur - Administrateur"
+            UC50[Consulter demandes en attente]
+            UC51[Vérifier documents promoteur]
+            UC52[Approuver demande promoteur]
+            UC53[Rejeter demande promoteur]
+            UC54[Demander documents complémentaires]
+            UC55[Consulter historique validations]
+            UC56[Suspendre compte promoteur]
+            UC57[Réactiver compte promoteur]
+        end
+        
+        subgraph "Gestion des Biens - Promoteur Validé"
+            UC5[Ajouter un bien]
+            UC6[Modifier un bien]
+            UC7[Supprimer un bien]
+            UC8[Ajouter photos/vidéos]
+            UC9[Gérer disponibilité]
+            UC10[Consulter ses biens]
+            UC58[Publier un bien]
+            UC59[Dépublier un bien]
+        end
+        
+        subgraph "Recherche et Consultation - Client"
+            UC11[Consulter catalogue]
+            UC12[Rechercher biens]
+            UC13[Filtrer résultats]
+            UC14[Voir fiche détaillée]
+            UC15[Comparer biens]
+        end
+        
+        subgraph "Réservation - Client"
+            UC16[Réserver un bien]
+            UC17[Remplir formulaire réservation]
+            UC18[Consulter mes réservations]
+            UC19[Modifier réservation]
+            UC20[Annuler réservation]
+        end
+        
+        subgraph "Paiement - V2"
+            UC21[Payer par Mobile Money]
+            UC22[Payer par carte bancaire]
+            UC23[Télécharger reçu électronique]
+            UC24[Consulter historique paiements]
+        end
+        
+        subgraph "Gestion Réservations - Promoteur"
+            UC25[Consulter réservations reçues]
+            UC26[Accepter/Refuser réservation]
+            UC27[Voir détails client]
+            UC28[Consulter paiements reçus]
+        end
+        
+        subgraph "Administration - Back Office"
+            UC29[Gérer utilisateurs]
+            UC30[Modérer biens]
+            UC31[Gérer commissions]
+            UC32[Consulter statistiques]
+            UC33[Gérer notifications]
+            UC34[Configurer système paiement]
+            UC60[Gérer types documents]
+            UC61[Configurer paramètres validation]
+        end
+        
+        subgraph "Notifications"
+            UC36[Recevoir notification SMS]
+            UC37[Recevoir notification Email]
+            UC38[Notification confirmation réservation]
+            UC39[Notification confirmation paiement]
+            UC62[Notification validation compte]
+            UC63[Notification rejet compte]
+            UC64[Notification documents manquants]
+        end
+        
+        subgraph "Reporting"
+            UC40[Tableau de bord client]
+            UC41[Tableau de bord promoteur]
+            UC42[Tableau de bord admin]
+        end
+    end
+    
+    Client((Client))
+    Promoteur((Promoteur<br/>Non Validé))
+    PromoteurValide((Promoteur<br/>Validé))
+    Admin((Administrateur))
+    SysPaiement((Système<br/>Paiement))
+    SysNotif((Système<br/>Notification))
+    SysValidation((Système<br/>Validation))
+    
+    Client --> UC1
+    Client --> UC2
+    Client --> UC3
+    Client --> UC11
+    Client --> UC12
+    Client --> UC13
+    Client --> UC14
+    Client --> UC15
+    Client --> UC16
+    Client --> UC17
+    Client --> UC18
+    Client --> UC19
+    Client --> UC20
+    Client --> UC21
+    Client --> UC22
+    Client --> UC23
+    Client --> UC24
+    Client --> UC40
+    
+    Promoteur --> UC43
+    Promoteur --> UC44
+    Promoteur --> UC45
+    Promoteur --> UC46
+    Promoteur --> UC47
+    Promoteur --> UC48
+    
+    PromoteurValide --> UC2
+    PromoteurValide --> UC3
+    PromoteurValide --> UC5
+    PromoteurValide --> UC6
+    PromoteurValide --> UC7
+    PromoteurValide --> UC8
+    PromoteurValide --> UC9
+    PromoteurValide --> UC10
+    PromoteurValide --> UC58
+    PromoteurValide --> UC59
+    PromoteurValide --> UC25
+    PromoteurValide --> UC26
+    PromoteurValide --> UC27
+    PromoteurValide --> UC28
+    PromoteurValide --> UC41
+    
+    Admin --> UC2
+    Admin --> UC29
+    Admin --> UC30
+    Admin --> UC31
+    Admin --> UC32
+    Admin --> UC33
+    Admin --> UC34
+    Admin --> UC42
+    Admin --> UC50
+    Admin --> UC51
+    Admin --> UC52
+    Admin --> UC53
+    Admin --> UC54
+    Admin --> UC55
+    Admin --> UC56
+    Admin --> UC57
+    Admin --> UC60
+    Admin --> UC61
+    
+    UC21 --> SysPaiement
+    UC22 --> SysPaiement
+    UC23 --> SysPaiement
+    
+    UC36 --> SysNotif
+    UC37 --> SysNotif
+    UC38 --> SysNotif
+    UC39 --> SysNotif
+    UC62 --> SysNotif
+    UC63 --> SysNotif
+    UC64 --> SysNotif
+    
+    UC46 --> SysValidation
+    UC52 --> SysValidation
+    UC53 --> SysValidation
+    
+    UC43 -.->|include| UC44
+    UC43 -.->|include| UC45
+    UC44 -.->|include| UC46
+    UC16 -.->|include| UC17
+    UC21 -.->|include| UC23
+    UC22 -.->|include| UC23
+    UC5 -.->|include| UC8
+    
+    UC52 -.->|trigger| UC62
+    UC53 -.->|trigger| UC63
+    UC54 -.->|trigger| UC64
+    UC26 -.->|trigger| UC38
+    UC21 -.->|trigger| UC39
+    UC22 -.->|trigger| UC39
+    UC46 -.->|trigger| UC49
+    
+    UC5 -.->|requires| UC52
+    UC58 -.->|requires| UC52
+    
+    style Client fill:#4A90E2
+    style Promoteur fill:#F39C12
+    style PromoteurValide fill:#27AE60
+    style Admin fill:#E74C3C
+    style SysPaiement fill:#95A5A6
+    style SysNotif fill:#95A5A6
+    style SysValidation fill:#9B59B6

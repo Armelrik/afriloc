@@ -68,7 +68,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($maintenanceRequests as $request)
+                                @forelse ($maintenanceRequests ?? [] as $request)
                                 <tr class="{{ $request->priority == 'urgent' ? 'table-danger' : '' }}">
                                     <td><strong>{{ $request->title }}</strong></td>
                                     <td>

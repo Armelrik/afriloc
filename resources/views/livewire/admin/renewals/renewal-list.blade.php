@@ -59,7 +59,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($renewals as $renewal)
+                                @forelse ($renewals ?? [] as $renewal)
                                 <tr>
                                     <td>{{ $renewal->user->name ?? 'N/A' }}</td>
                                     <td>

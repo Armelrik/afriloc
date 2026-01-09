@@ -57,7 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($contacts as $contact)
+                                @forelse ($contacts ?? [] as $contact)
                                 <tr class="{{ $contact->status == 'unread' ? 'table-warning' : '' }}">
                                     <td><strong>{{ $contact->name }}</strong></td>
                                     <td>{{ $contact->email }}</td>

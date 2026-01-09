@@ -18,14 +18,26 @@ class RoleMiddleware
     {
         if (!auth()->check()) {
             // Rediriger vers la page de connexion appropriée selon le rôle requis
-            if ($role === 'admin') {
+            if (str_contains($role, 'admin')) {
                 return redirect()->route('admin.login');
             }
             return redirect('/login');
         }
 
-        if (!auth()->user()->hasRole($role)) {
-            // Si l'utilisateur est connecté mais n'a pas le bon rôle
+        // Gérer plusieurs rôles séparés par des virgules
+        $roles = explode(',', $role);
+        $roles = array_map('trim', $roles); // Supprimer les espaces
+        
+        $hasRequiredRole = false;
+        foreach ($roles as $requiredRole) {
+            if (auth()->user()->hasRole($requiredRole)) {
+                $hasRequiredRole = true;
+                break;
+            }
+        }
+
+        if (!$hasRequiredRole) {
+            // Si l'utilisateur est connecté mais n'a aucun des rôles requis
             abort(403, 'Accès non autorisé. Vous n\'avez pas les permissions nécessaires.');
         }
 

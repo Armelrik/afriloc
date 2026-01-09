@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\MaintenanceRequest;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,39 +17,15 @@ class MaintenanceList extends Component
 
     public function render()
     {
-        $query = MaintenanceRequest::with(['user', 'property', 'booking']);
-
-        if ($this->statusFilter) {
-            $query->where('status', $this->statusFilter);
-        }
-
-        if ($this->priorityFilter) {
-            $query->where('priority', $this->priorityFilter);
-        }
-
-        if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('user', function ($u) {
-                      $u->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('email', 'like', '%' . $this->search . '%');
-                  })
-                  ->orWhereHas('property', function ($p) {
-                      $p->where('title_en', 'like', '%' . $this->search . '%')
-                        ->orWhere('title_fr', 'like', '%' . $this->search . '%');
-                  });
-            });
-        }
-
-        $maintenanceRequests = $query->latest()->paginate(15);
+        // MaintenanceRequest model n'existe plus - fonctionnalité désactivée
+        $maintenanceRequests = collect([]);
 
         $stats = [
-            'total' => MaintenanceRequest::count(),
-            'pending' => MaintenanceRequest::pending()->count(),
-            'in_progress' => MaintenanceRequest::where('status', 'in_progress')->count(),
-            'completed' => MaintenanceRequest::where('status', 'completed')->count(),
-            'urgent' => MaintenanceRequest::urgent()->whereIn('status', ['pending', 'in_progress'])->count(),
+            'total' => 0,
+            'pending' => 0,
+            'in_progress' => 0,
+            'completed' => 0,
+            'urgent' => 0,
         ];
 
         return view('livewire.admin.maintenance.maintenance-list', [
@@ -64,5 +39,3 @@ class MaintenanceList extends Component
         $this->reset(['statusFilter', 'priorityFilter', 'search']);
     }
 }
-
-
