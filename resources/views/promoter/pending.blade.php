@@ -7,18 +7,18 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
         
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ __('Application Pending') }}</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ __('messages.promoter.application_pending') }}</h2>
         
         <p class="text-gray-600 mb-6">
-            {{ __('Thank you for your interest in becoming a promoter! Your application is currently under review.') }}
+            {{ __('messages.promoter.application_pending_message') }}
         </p>
         
         <p class="text-gray-600 mb-8">
-            {{ __('You will receive an email notification once your account is approved. This usually takes 1-2 business days.') }}
+            {{ __('messages.promoter.application_approval_info') }}
         </p>
         
         <a href="{{ route('home') }}" class="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-600">
-            {{ __('Return to Home') }}
+            {{ __('messages.promoter.return_home') }}
         </a>
     </div>
 </div>

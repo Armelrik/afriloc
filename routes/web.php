@@ -76,9 +76,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', Admin\Dashboard::class)->name('admin.dashboard');
     // Properties routes
     Route::get('/properties', Admin\Properties\PropertyList::class)->name('admin.properties');
+    Route::get('/properties/create', Admin\Properties\PropertyForm::class)->name('admin.properties.create');
     Route::get('/properties/{id}', Admin\Properties\PropertyDetail::class)->name('admin.properties.show');
     Route::get('/properties/{id}/edit', Admin\Properties\PropertyForm::class)->name('admin.properties.edit');
-    Route::get('/properties/create', Admin\Properties\PropertyForm::class)->name('admin.properties.create');
     
     // Bookings routes
     Route::get('/bookings', Admin\Bookings\BookingList::class)->name('admin.bookings');

@@ -50,7 +50,7 @@ class ValidationDetail extends Component
         HistoriqueValidation::creer(
             $this->validation->promoteur_id,
             $adminId,
-            'APPROUVEE',
+            'APPROUVE',
             'EN_ATTENTE',
             'VALIDE',
             'Demande de validation approuvée par l\'administrateur'
@@ -75,7 +75,7 @@ class ValidationDetail extends Component
         HistoriqueValidation::creer(
             $this->validation->promoteur_id,
             $adminId,
-            'REJETEE',
+            'REJETE',
             'EN_ATTENTE',
             'REJETE',
             'Motif: ' . $this->rejectMotif

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Promoter;
 
-use App\Models\Promoter;
+use App\Models\Promoteur;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,23 +16,31 @@ class Registration extends Component
     public $step = 1;
     
     // Step 1: User account
-    public $name = '';
+    public $nom = '';
+    public $prenom = '';
     public $email = '';
     public $password = '';
     public $password_confirmation = '';
     
     // Step 2: Professional info
-    public $company_name = '';
+    public $raison_sociale = '';
+    public $type_structure = '';
+    public $numero_siret = '';
+    public $adresse_professionnelle = '';
+    public $ville = '';
     public $phone = '';
     public $whatsapp = '';
-    public $address = '';
+    public $description = '';
     
-    // Step 3: Identity documents
-    public $identification_number = '';
-    public $identification_document;
-    
-    // Step 4: Bank account (optional)
-    public $bank_account = '';
+    // Step 3: Documents
+    public $cnib_recto;
+    public $cnib_verso;
+    public $photo_promoteur;
+    public $justificatif_domicile;
+    public $registre_commerce;
+    public $attestation_fiscale;
+    public $certificat_propriete;
+    public $assurance_rc;
 
     protected function rules()
     {
@@ -40,19 +48,31 @@ class Registration extends Component
         
         if ($this->step === 1) {
             $rules = [
-                'name' => 'required|string|max:255',
+                'nom' => 'required|string|max:255',
+                'prenom' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:8|confirmed',
             ];
         } elseif ($this->step === 2) {
             $rules = [
+                'raison_sociale' => 'required|string|max:255',
+                'type_structure' => 'required|string',
+                'numero_siret' => 'nullable|string|max:50',
+                'adresse_professionnelle' => 'required|string',
+                'ville' => 'required|string|max:100',
                 'phone' => 'required|string|max:20',
-                'address' => 'required|string',
+                'description' => 'nullable|string',
             ];
         } elseif ($this->step === 3) {
             $rules = [
-                'identification_number' => 'required|string',
-                'identification_document' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'cnib_recto' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'cnib_verso' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'photo_promoteur' => 'required|file|mimes:jpg,jpeg,png|max:5120',
+                'justificatif_domicile' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'registre_commerce' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'attestation_fiscale' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'certificat_propriete' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+                'assurance_rc' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             ];
         }
         
@@ -72,37 +92,63 @@ class Registration extends Component
 
     public function submit()
     {
-        if ($this->step === 4) {
-            $this->validate([
-                'bank_account' => 'nullable|string',
-            ]);
+        if ($this->step === 3) {
+            $this->validate();
             
             // Create user account
             $user = User::create([
-                'name' => $this->name,
+                'name' => $this->nom . ' ' . $this->prenom,
+                'nom' => $this->nom,
+                'prenom' => $this->prenom,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
+                'type_utilisateur' => 'promoteur',
+                'date_inscription' => now(),
+                'est_actif' => true,
             ]);
             
             $user->assignRole('promoter');
             
-            // Upload document
-            $documentPath = null;
-            if ($this->identification_document) {
-                $documentPath = $this->identification_document->store('promoter-documents', 'public');
+            // Upload documents
+            $documentData = [];
+            
+            if ($this->cnib_recto) {
+                $documentData['cnib_recto'] = $this->cnib_recto->store('promoter-documents', 'public');
+            }
+            if ($this->cnib_verso) {
+                $documentData['cnib_verso'] = $this->cnib_verso->store('promoter-documents', 'public');
+            }
+            if ($this->photo_promoteur) {
+                $documentData['photo_promoteur'] = $this->photo_promoteur->store('promoter-documents', 'public');
+            }
+            if ($this->justificatif_domicile) {
+                $documentData['justificatif_domicile'] = $this->justificatif_domicile->store('promoter-documents', 'public');
+            }
+            if ($this->registre_commerce) {
+                $documentData['registre_commerce'] = $this->registre_commerce->store('promoter-documents', 'public');
+            }
+            if ($this->attestation_fiscale) {
+                $documentData['attestation_fiscale'] = $this->attestation_fiscale->store('promoter-documents', 'public');
+            }
+            if ($this->certificat_propriete) {
+                $documentData['certificat_propriete'] = $this->certificat_propriete->store('promoter-documents', 'public');
+            }
+            if ($this->assurance_rc) {
+                $documentData['assurance_rc'] = $this->assurance_rc->store('promoter-documents', 'public');
             }
             
             // Create promoter profile
-            Promoter::create([
+            Promoteur::create([
                 'user_id' => $user->id,
-                'company_name' => $this->company_name,
-                'phone' => $this->phone,
-                'whatsapp' => $this->whatsapp,
-                'address' => $this->address,
-                'identification_number' => $this->identification_number,
-                'identification_document' => $documentPath,
-                'bank_account' => $this->bank_account,
-                'status' => 'pending',
+                'raison_sociale' => $this->raison_sociale,
+                'type_structure' => $this->type_structure,
+                'numero_siret' => $this->numero_siret,
+                'adresse_professionnelle' => $this->adresse_professionnelle,
+                'ville' => $this->ville,
+                'description' => $this->description,
+                'statut' => 'EN_ATTENTE',
+                'date_inscription' => now(),
+                ...$documentData,
             ]);
             
             Auth::login($user);
@@ -113,8 +159,15 @@ class Registration extends Component
         }
     }
 
+    public function generateRandomSiret()
+    {
+        return implode('', array_map(fn() => rand(0, 9), range(1, 14)));
+    }
+
     public function render()
     {
-        return view('livewire.promoter.registration')->layout('layouts.app');
+        return view('livewire.promoter.registration', [
+            'randomSiret' => $this->generateRandomSiret(),
+        ])->layout('layouts.app');
     }
 }

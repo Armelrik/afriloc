@@ -18,9 +18,8 @@ class VerifiedPromoterMiddleware
             abort(403, 'Unauthorized');
         }
 
-        $promoter = $request->user()->promoter;
-
-        if (!$promoter || $promoter->status !== 'approved') {
+        $promoteur = $request->user()->promoteur;
+        if ($promoteur->statut !== 'VALIDE') {
             return redirect()->route('promoter.pending')
                 ->with('warning', __('Your account is pending approval. You will be notified once approved.'));
         }

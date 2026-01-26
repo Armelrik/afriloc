@@ -17,7 +17,10 @@
 </head>
 <body class="font-sans antialiased bg-white text-gray-900">
     <div class="min-h-screen">
-        {{ $slot }}
+        @isset($slot)
+            {{ $slot }}
+        @endif
+        @yield('content')
     </div>
 
     @livewireScripts

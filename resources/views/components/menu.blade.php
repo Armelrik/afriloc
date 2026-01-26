@@ -149,16 +149,7 @@
                     </a>
                 </li>
 
-                <!-- Exemples UI (pour développement) -->
-                <li class="nav-item {{ request()->is('admin/exemples*') ? 'active' : '' }}">
-                    <a href="/admin/exemples/ui-elements"
-                        class="nav-link {{ request()->is('admin/exemples*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-palette"></i>
-                        <p>Exemples UI</p>
-                        <span class="badge badge-info right">Demo</span>
-                    </a>
-                </li>
-
+            
                 <!-- Déconnexion -->
                 <li class="nav-item">
                     <a href="#" class="nav-link"
