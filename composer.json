@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "BARKA",
+    "name": "laravel/laravel",
     "type": "project",
     "description": "Site de location en tout genre",
     "keywords": [
