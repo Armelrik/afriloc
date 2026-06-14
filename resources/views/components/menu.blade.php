@@ -2,9 +2,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/admin/dashboard" class="brand-link">
-        {{-- <img src="{{ asset('assets/img/logo.png') }}" alt="Afriloc Logo" class="brand-image img-square elevation-3"
+        {{-- <img src="{{ asset('assets/img/logo.png') }}" alt="BARKA Logo" class="brand-image img-square elevation-3"
             style="opacity: .8"> --}}
-        <span class="brand-text font-weight-light">Afriloc Admin</span>
+        <span class="brand-text font-weight-light">BARKA Admin</span>
     </a>
 
     <!-- Sidebar -->

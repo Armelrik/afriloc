@@ -14,7 +14,7 @@
                         </svg>
                         <div>
                             <h3 class="font-semibold mb-1">Email</h3>
-                            <p class="text-gray-600">info@afriloc.com</p>
+                            <p class="text-gray-600">info@barka.com</p>
                         </div>
                     </div>
                 </div>
