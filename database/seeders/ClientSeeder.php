@@ -17,7 +17,7 @@ class ClientSeeder extends Seeder
                 'name' => "Client Test $i",
                 'nom' => "Test$i",
                 'prenom' => "Client$i",
-                'email' => "client$i@afriloc.com",
+                'email' => "client$i@barka.com",
                 'telephone' => "+2267000000$i",
                 'password' => Hash::make('password123'),
                 'type_utilisateur' => 'client',
@@ -33,7 +33,7 @@ class ClientSeeder extends Seeder
                 'ville_residence' => 'Ouagadougou',
             ]);
 
-            $this->command->info("Created client: client$i@afriloc.com");
+            $this->command->info("Created client: client$i@barka.com");
         }
     }
 }

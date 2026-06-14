@@ -11,7 +11,7 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         $admin = User::firstOrCreate(
-            ['email' => 'admin@afriloc.com'],
+            ['email' => 'admin@barka.com'],
             [
                 'name' => 'Admin User',
                 'nom' => 'Admin',
@@ -27,6 +27,6 @@ class AdminSeeder extends Seeder
             $admin->assignRole('admin');
         }
 
-        $this->command->info('Admin user created: admin@afriloc.com / password123');
+        $this->command->info('Admin user created: admin@barka.com / password123');
     }
 }

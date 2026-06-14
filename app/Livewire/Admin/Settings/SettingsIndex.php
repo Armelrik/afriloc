@@ -9,8 +9,8 @@ class SettingsIndex extends Component
     public $activeTab = 'general';
     
     // Général
-    public $nomPlateforme = 'AfriLoc';
-    public $emailContact = 'contact@afriloc.com';
+    public $nomPlateforme = 'Barka';
+    public $emailContact = 'contact@barka.com';
     public $telephoneContact = '';
     
     // Validation

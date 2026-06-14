@@ -3,13 +3,13 @@
     "messages.hero.subtitle": "Découvrez les meilleures propriétés à louer et à vendre au Burkina Faso",
     "messages.hero.cta": "Parcourir les Propriétés",
     "messages.hero.search_placeholder": "Rechercher par lieu, type de bien...",
-    
+
     "messages.stats.houses": "Maisons",
     "messages.stats.apartments": "Appartements",
     "messages.stats.lands": "Terrains",
     "messages.stats.promoters": "Promoteurs Vérifiés",
     "messages.stats.clients": "Clients Satisfaits",
-    
+
     "messages.properties.title": "Propriétés en Vedette",
     "messages.properties.view_all": "Voir Toutes les Propriétés",
     "messages.properties.featured": "En Vedette",
@@ -41,7 +41,7 @@
     "messages.properties.per_month": "par mois",
     "messages.properties.per_mensuel": "par mois",
     "messages.properties.view_details": "Voir Détails",
-    
+
     "messages.how_it_works.title": "Comment Ça Marche",
     "messages.how_it_works.subtitle": "Trouvez votre propriété idéale en 3 étapes simples",
     "messages.how_it_works.step1.title": "Recherchez",
@@ -50,8 +50,8 @@
     "messages.how_it_works.step2.desc": "Planifiez une visite avec nos agents professionnels",
     "messages.how_it_works.step3.title": "Emménagez",
     "messages.how_it_works.step3.desc": "Finalisez votre réservation et emménagez rapidement",
-    
-    "messages.benefits.title": "Pourquoi Choisir AfriLoc",
+
+    "messages.benefits.title": "Pourquoi Choisir BARKA",
     "messages.benefits.subtitle": "Votre partenaire de confiance pour l'immobilier au Burkina Faso",
     "messages.benefits.verified.title": "Propriétés Vérifiées",
     "messages.benefits.verified.desc": "Toutes nos propriétés sont inspectées et certifiées",
@@ -65,7 +65,7 @@
     "messages.benefits.fast.desc": "Réservez et emménagez en quelques jours",
     "messages.benefits.quality.title": "Qualité Garantie",
     "messages.benefits.quality.desc": "Des propriétés de qualité supérieure seulement",
-    
+
     "messages.become_promoter.title": "Vous êtes Promoteur Immobilier ?",
     "messages.become_promoter.subtitle": "Rejoignez notre plateforme et développez votre activité",
     "messages.become_promoter.cta": "Devenir Promoteur",
@@ -73,10 +73,10 @@
     "messages.become_promoter.benefit2": "Gestion simplifiée de vos biens",
     "messages.become_promoter.benefit3": "Support marketing gratuit",
     "messages.become_promoter.benefit4": "Commission attractive",
-    
+
     "messages.cta.title": "Prêt à trouver votre maison idéale ?",
     "messages.cta.subtitle": "Contactez-nous dès aujourd'hui et laissez-nous vous aider à trouver la propriété parfaite à Ouagadougou",
-    
+
     "messages.nav.home": "Accueil",
     "messages.nav.properties": "Propriétés",
     "messages.nav.about": "À Propos",
@@ -90,7 +90,7 @@
     "messages.nav.my_account": "Mon Compte",
     "messages.nav.my_properties": "Mes Propriétés",
     "messages.nav.my_bookings": "Mes Réservations",
-    
+
     "messages.common.loading": "Chargement...",
     "messages.common.learn_more": "En savoir plus",
     "messages.common.fcfa": "FCFA",
@@ -99,7 +99,7 @@
     "messages.common.cancel": "Annuler",
     "messages.common.yes": "Oui",
     "messages.common.no": "Non",
-    
+
     "messages.contact.title": "Contactez-Nous",
     "messages.contact.subtitle": "Contactez-nous pour toute demande d'information",
     "messages.contact.name": "Nom Complet",
@@ -112,9 +112,9 @@
     "messages.contact.info.title": "Informations de Contact",
     "messages.contact.info.address": "Ouagadougou, Burkina Faso",
     "messages.contact.info.phone": "+226 XX XX XX XX",
-    "messages.contact.info.email": "contact@afriloc.com",
+    "messages.contact.info.email": "contact@barka.com",
     "messages.contact.info.hours": "Lun - Ven: 8h00 - 18h00",
-    
+
     "messages.footer.description": "Votre partenaire immobilier de confiance à Ouagadougou",
     "messages.footer.links": "Liens Rapides",
     "messages.footer.contact_us": "Nous Contacter",
@@ -126,7 +126,7 @@
     "messages.footer.rights": "Tous droits réservés",
     "messages.footer.privacy": "Politique de Confidentialité",
     "messages.footer.terms": "Conditions d'Utilisation",
-    
+
     "messages.admin.dashboard": "Tableau de Bord",
     "messages.admin.total_properties": "Total Propriétés",
     "messages.admin.total_bookings": "Total Réservations",
@@ -158,7 +158,7 @@
     "messages.admin.email": "Email",
     "messages.admin.subject": "Sujet",
     "messages.admin.date": "Date",
-    
+
     "messages.search.location": "Localisation",
     "messages.search.location_placeholder": "Entrez une localisation...",
     "messages.search.bedrooms": "Chambres",
@@ -173,7 +173,7 @@
     "messages.search.sort.price_desc": "Prix décroissant",
     "messages.search.sort.area_asc": "Surface croissante",
     "messages.search.sort.area_desc": "Surface décroissante",
-    
+
     "messages.payment.title": "Paiement",
     "messages.payment.method": "Mode de paiement",
     "messages.payment.mobile_money": "Mobile Money",
@@ -200,7 +200,7 @@
     "messages.payment.submit": "Payer maintenant",
     "messages.payment.processing": "Traitement en cours...",
     "messages.payment.booking_summary": "Résumé de la réservation",
-    
+
     "validation.required": "Ce champ est obligatoire.",
     "messages.payment.total_amount": "Montant total",
     "messages.payment.paid": "Payé",
@@ -210,7 +210,7 @@
     "messages.payment.fully_paid_desc": "Cette réservation est entièrement payée",
     "messages.payment.view_bookings": "Voir mes réservations",
     "messages.payment.pay_now": "Payer maintenant",
-    
+
     "messages.booking.login_to_book": "Connectez-vous pour réserver",
     "messages.booking.rental_details": "Détails de la location",
     "messages.booking.monthly_rent": "Loyer mensuel",
@@ -221,14 +221,14 @@
     "messages.booking.status.active": "Actif",
     "messages.booking.status.completed": "Terminé",
     "messages.common.all": "Tous",
-    
+
     "messages.renewal.expires": "Expire",
-    
+
     "messages.maintenance.status.pending": "En attente",
     "messages.maintenance.status.in_progress": "En cours",
     "messages.maintenance.status.completed": "Terminé",
     "messages.maintenance.status.cancelled": "Annulé",
-    
+
     "messages.client.dashboard": "Tableau de bord",
     "messages.client.active_bookings": "Réservations actives",
     "messages.client.pending_payments": "Paiements en attente",
@@ -246,14 +246,14 @@
     "messages.client.browse_properties": "Parcourir les propriétés",
     "messages.client.submit_maintenance": "Demande de maintenance",
     "messages.client.view_messages": "Voir les messages",
-    
+
     "messages.properties.per_monthly": "par mois",
     "messages.properties.per_yearly": "par an",
     "messages.properties.per_weekly": "par semaine",
     "messages.properties.per_daily": "par jour",
-    
+
     "messages.common.view_all": "Voir tout",
-    
+
     "messages.auth.login": "Connexion",
     "messages.auth.register": "Inscription",
     "messages.auth.email": "Adresse e-mail",
@@ -267,14 +267,14 @@
     "messages.auth.have_account": "Vous avez déjà un compte ?",
     "messages.auth.login_now": "Connectez-vous maintenant",
     "messages.auth.invalid_credentials": "Les informations d'identification fournies ne correspondent pas à nos dossiers.",
-    
+
     "messages.client.my_bookings": "Mes Réservations",
     "messages.client.bookings_subtitle": "Gérez toutes vos réservations de propriétés",
     "messages.client.no_bookings_description": "Vous n'avez pas encore de réservation. Commencez à explorer nos propriétés !",
     "messages.client.maintenance_subtitle": "Gérez vos demandes de maintenance",
     "messages.client.no_maintenance_description": "Vous n'avez pas encore de demande de maintenance.",
     "messages.client.messages": "Messages",
-    
+
     "messages.maintenance.title": "Titre",
     "messages.maintenance.title_placeholder": "Ex: Fuite d'eau dans la cuisine",
     "messages.maintenance.description": "Description",
@@ -291,12 +291,12 @@
     "messages.maintenance.request_submitted": "Demande de maintenance soumise avec succès !",
     "messages.maintenance.resolution": "Résolution",
     "messages.maintenance.resolved": "Résolu",
-    
+
     "messages.messaging.conversations": "Conversations",
     "messages.messaging.no_conversations": "Aucune conversation",
     "messages.messaging.select_conversation": "Sélectionnez une conversation",
     "messages.messaging.type_message": "Tapez votre message...",
-    
+
     "messages.common.view_property": "Voir la propriété",
     "messages.common.select": "Sélectionner",
     "messages.common.created": "Créé",
@@ -346,7 +346,7 @@
     "messages.booking.promoter_amount": "Montant pour le promoteur",
     "messages.booking.submit_request": "Soumettre la demande",
     "messages.booking.request_submitted": "Demande de réservation soumise avec succès !",
-    
+
     "messages.promoter.dashboard": "Tableau de bord promoteur",
     "messages.promoter.total_properties": "Total des propriétés",
     "messages.promoter.active_bookings": "Réservations actives",
@@ -377,7 +377,7 @@
     "messages.promoter.rejection_reason": "Raison du rejet",
     "messages.promoter.rejection_reason_placeholder": "Expliquez pourquoi vous rejetez cette réservation...",
     "messages.promoter.client": "Client",
-    
+
     "messages.promoter.renewals_subtitle": "Gérez les demandes de renouvellement",
     "messages.promoter.initiate_renewal": "Initier un renouvellement",
     "messages.promoter.upcoming_expirations": "Expirations à venir",
@@ -393,7 +393,7 @@
     "messages.promoter.reminder_sent": "Rappel envoyé avec succès",
     "messages.promoter.no_renewals": "Aucune demande de renouvellement",
     "messages.promoter.no_renewals_description": "Aucune demande de renouvellement pour le moment",
-    
+
     "messages.promoter.maintenance_subtitle": "Gérez les demandes de maintenance",
     "messages.promoter.urgent_requests": "Demandes urgentes",
     "messages.promoter.urgent_maintenance_pending": "demandes de maintenance urgentes en attente",
@@ -407,9 +407,9 @@
     "messages.promoter.resolution_notes": "Notes de résolution",
     "messages.promoter.resolution_notes_placeholder": "Décrivez comment le problème a été résolu...",
     "messages.promoter.no_maintenance_description": "Aucune demande de maintenance pour le moment",
-    
+
     "messages.promoter.messages": "Messages",
-    
+
     "messages.promoter.actions.confirm": "Confirmer",
     "messages.promoter.actions.reject": "Rejeter",
     "messages.promoter.actions.approve": "Approuver",
@@ -417,7 +417,7 @@
     "messages.promoter.actions.add_response": "Ajouter une réponse",
     "messages.promoter.actions.update_response": "Mettre à jour la réponse",
     "messages.promoter.actions.mark_completed": "Marquer comme terminé",
-    
+
     "messages.promoter.application_pending": "Demande en Attente",
     "messages.promoter.application_pending_message": "Merci de votre intérêt en devenant promoteur ! Votre demande est actuellement en examen.",
     "messages.promoter.application_approval_info": "Vous recevrez une notification par e-mail dès que votre compte sera approuvé. Cela prend généralement 1-2 jours ouvrés.",
@@ -428,7 +428,7 @@
     "messages.promoter.actions.add_response": "Ajouter une réponse",
     "messages.promoter.actions.update_response": "Mettre à jour la réponse",
     "messages.promoter.actions.mark_completed": "Marquer comme terminé",
-    
+
     "messages.renewal.status.pending": "En attente",
     "messages.renewal.status.approved": "Approuvé",
     "messages.renewal.status.rejected": "Rejeté",
@@ -438,12 +438,12 @@
     "messages.renewal.frequency": "Fréquence",
     "messages.renewal.amount": "Montant",
     "messages.renewal.approved_at": "Approuvé le",
-    
+
     "messages.maintenance.completed_at": "Terminé le",
-    
+
     "messages.payment.status_label": "Statut du paiement",
     "messages.payment.payment_info": "Informations de paiement",
-    
+
     "messages.notifications.new_booking_subject": "Nouvelle réservation reçue",
     "messages.notifications.greeting": "Bonjour :name,",
     "messages.notifications.new_booking_body": "Vous avez reçu une nouvelle réservation pour :property de la part de :customer.",
@@ -462,7 +462,7 @@
     "messages.notifications.maintenance_description": "Description: :description",
     "messages.notifications.maintenance_client": "Client: :client",
     "messages.notifications.view_maintenance": "Voir la demande",
-    
+
     "messages.admin.admin_panel": "Panneau d'administration",
     "messages.admin.administrator": "Administrateur",
     "messages.admin.notifications": "Notifications",
@@ -573,7 +573,7 @@
     "messages.registration.info3": "Tous les documents sont sécurisés et confidentiels",
     "messages.registration.info4": "Le traitement prend généralement 2-3 jours ouvrés",
     "messages.common.optional": "Optionnel",
-    
+
     "My Properties": "Mes Propriétés",
     "Add New Property": "Ajouter une Propriété",
     "Search properties...": "Rechercher les propriétés...",
@@ -618,7 +618,7 @@
     "Cancel": "Annuler",
     "Update Property": "Mettre à Jour la Propriété",
     "Create Property": "Créer la Propriété",
-    
+
     "messages.properties.my_properties": "Mes Propriétés",
     "messages.properties.add_new": "Ajouter une Propriété",
     "messages.properties.add_new_property": "Ajouter une Propriété",
@@ -630,7 +630,7 @@
     "messages.common.edit": "Modifier",
     "messages.common.delete": "Supprimer",
     "messages.common.all_status": "Tous les Statuts",
-    
+
     "messages.admin.dashboard": "Tableau de Bord",
     "messages.admin.properties": "Propriétés",
     "messages.admin.promoters": "Promoteurs",
