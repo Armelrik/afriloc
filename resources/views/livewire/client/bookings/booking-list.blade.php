@@ -1,4 +1,3 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
 <div>
     @livewire('components.header')
 
@@ -53,7 +52,7 @@
                                     @php
                                         $image = $booking->bien->medias->where('type_media', 'IMAGE')->first();
                                     @endphp
-                                    <img src="{{ Storage::url($image->url_media) }}" 
+                                    <img src="{{ $image->public_url }}" 
                                          alt="{{ $booking->bien->titre }}" 
                                          class="w-full md:w-48 h-48 object-cover rounded-lg">
                                 @endif
@@ -175,4 +174,3 @@
 
     @livewire('components.footer')
 </div>
-

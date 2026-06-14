@@ -85,8 +85,8 @@
                         <div class="row">
                             @foreach($images as $image)
                             <div class="col-md-4 mb-3">
-                                <a href="{{ asset('storage/' . $image->url_media) }}" target="_blank">
-                                    <img src="{{ asset('storage/' . $image->url_media) }}" 
+                                <a href="{{ $image->public_url }}" target="_blank">
+                                    <img src="{{ $image->public_url }}" 
                                          alt="Image" 
                                          class="img-fluid rounded"
                                          style="max-height: 200px; width: 100%; object-fit: cover;">
@@ -404,4 +404,3 @@
 <div class="modal-backdrop fade show"></div>
 @endif
 </div>
-

@@ -87,7 +87,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($property->medias && $property->medias->where('type_media', 'IMAGE')->first())
-                                                <img src="{{ asset('storage/' . $property->medias->where('type_media', 'IMAGE')->first()->url_media) }}" 
+                                                <img src="{{ $property->medias->where('type_media', 'IMAGE')->first()->public_url }}" 
                                                      alt="{{ $property->titre }}" 
                                                      class="img-thumbnail mr-2" 
                                                      style="width: 50px; height: 50px; object-fit: cover;">

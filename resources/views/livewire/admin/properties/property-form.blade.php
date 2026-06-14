@@ -370,7 +370,7 @@
                                 @foreach($existingImages as $image)
                                 <div class="col-md-3 mb-3">
                                     <div class="position-relative image-container" style="height: 150px;">
-                                        <img src="{{ asset('storage/' . $image->url_media) }}" 
+                                        <img src="{{ $image->public_url }}" 
                                              alt="Image" 
                                              class="img-fluid rounded"
                                              style="height: 100%; width: 100%; object-fit: cover;">
@@ -651,6 +651,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
-
 
 

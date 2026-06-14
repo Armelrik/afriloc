@@ -80,7 +80,7 @@
                                             @php
                                                 $image = $booking->bien->medias->where('type_media', 'IMAGE')->first();
                                             @endphp
-                                            <img src="{{ Storage::url($image->url_media) }}" 
+                                            <img src="{{ $image->public_url }}" 
                                                  alt="{{ $booking->bien->titre }}" 
                                                  class="w-20 h-20 object-cover rounded-lg">
                                         @endif

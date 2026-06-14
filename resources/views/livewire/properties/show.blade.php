@@ -1,4 +1,3 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
 <div>
     @livewire('components.header')
 
@@ -12,7 +11,7 @@
                 @endphp
                 @if($images->count() > 0)
                     <div class="mb-8">
-                        <img src="{{ Storage::url($images->first()->url_media) }}" alt="{{ $property->titre }}" 
+                        <img src="{{ $images->first()->public_url }}" alt="{{ $property->titre }}" 
                              class="w-full h-96 object-cover rounded-xl shadow-lg">
                     </div>
                 @endif
